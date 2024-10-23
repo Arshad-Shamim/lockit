@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import image from '../assets/login.jpg'
 import {Helmet} from 'react-helmet';  //for modify head tag;
+import Signup from './Signup';
 
 export default function Signin() {
     let [passwordf,setPasswordf] = useState(true);
@@ -68,7 +69,7 @@ export default function Signin() {
                         </form>
 
                         <div className="text-center col-lg-8 my-4">
-                            <p>New User? <a href="">Sign up</a></p>
+                            <p>New User? <a href="/signup">Sign up</a></p>
                         </div>
                     </div>
                 </div>
