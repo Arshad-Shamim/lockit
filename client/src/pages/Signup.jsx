@@ -1,8 +1,31 @@
 import React from 'react'
 import SignupImg from '../assets/Signup.jpg';
 import {Helmet} from 'react-helmet'
+import { useState } from 'react';
 
 export default function Signup() {
+
+  let [email,setEmail] = useState("");
+  function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function and mount the page;
+      setEmail(e.target.value);
+      let temp = e.target.value;
+      let count=0;
+      for(let ch of temp){     //email must be contain excatily one @;
+        if(ch=='@')
+          count++;
+      }
+
+      if(count==1){
+          let element = document.getElementById("varify");
+          element.classList.remove("disabled");
+      }
+      else
+      {
+        let element=document.getElementById("varify");
+        element.classList.add("disabled")
+      }
+  }
+
   return (
     <>
         <Helmet>
@@ -30,7 +53,14 @@ export default function Signup() {
               </div>
               <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
-                <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                <div className='row'>
+                  <div className='col-10 p-0 m-0'>
+                    <input type="email" name="email" className="form-control" onChange={(e)=>handleEmail(e)} id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                  </div>
+                  <div className='col-2 p-0 m-0'>
+                    <button type="button" id="varify" className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>Varify</button>
+                  </div>
+                </div>
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
               </div>
               <div class="mb-3">
