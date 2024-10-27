@@ -1,5 +1,5 @@
 import React from 'react'
-import SignupImg from '../assets/Signup.jpg';
+import SignupImg from '../assets/signup.jpg';
 import {Helmet} from 'react-helmet'
 import { useState } from 'react';
 
