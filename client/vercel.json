@@ -1,0 +1,9 @@
+{
+    "build": {
+      "command": "npm run build",
+      "output": "dist"
+    },
+    "engines": {
+      "node": "21.2.0" 
+    }
+  }
