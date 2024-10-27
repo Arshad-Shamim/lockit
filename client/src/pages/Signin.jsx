@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import image from '../assets/login.jpg'
 import {Helmet} from 'react-helmet';  //for modify head tag;
-import Signup from './Signup';
 
 export default function Signin() {
     let [passwordf,setPasswordf] = useState(true);
