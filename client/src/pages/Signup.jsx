@@ -2,6 +2,7 @@ import React from 'react'
 import SignupImg from '../assets/signup.jpg';
 import {Helmet} from 'react-helmet'
 import { useState } from 'react';
+import { varifyEmail } from '../api/signup.mjs';
 
 export default function Signup() {
 
@@ -25,6 +26,10 @@ export default function Signup() {
         let element=document.getElementById("varify");
         element.classList.add("disabled")
       }
+  }
+
+  function handlevarify(){
+    varifyEmail(email);
   }
 
   return (
@@ -58,7 +63,7 @@ export default function Signup() {
                     <input type="email" name="email" className="form-control" onChange={(e)=>handleEmail(e)} id="exampleInputEmail1" aria-describedby="emailHelp"/>
                   </div>
                   <div className='col-2 p-0 m-0'>
-                    <button type="button" id="varify" className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>Varify</button>
+                    <button type="button" id="varify" onClick={handlevarify} className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>Varify</button>
                   </div>
                 </div>
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
