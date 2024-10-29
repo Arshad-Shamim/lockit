@@ -8,7 +8,7 @@ export default function Signup() {
 
   let [email,setEmail] = useState("");
   let [passwordf,setPasswordf] = useState(false);
-  function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function and mount the page;
+  function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function end and mount the page;
       setEmail(e.target.value);
       let temp = e.target.value;
       let count=0;

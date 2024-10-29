@@ -1,7 +1,7 @@
 import exp from 'constants';
 import express, { urlencoded } from 'express'
 import { router as handleEmail }  from '../router/email.mjs';
-import cors from 'cors';
+import cors from 'cors';    //for get data from client (only get object);
 
 const app = express();
 app.use(express.json());

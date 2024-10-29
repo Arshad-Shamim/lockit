@@ -1,23 +1,24 @@
-import nodemailer from 'nodemailer';
+import nodemailer from 'nodemailer';    //for send email
 import { emailFromat } from './emailFromet.mjs';
 
-function sendMail(receiver,subject,body){
-    const transpoter = nodemailer.createTransport({
+//this function is responsiable for send email to user;
+function sendMail(receiver,subject,body){    
+    const transpoter = nodemailer.createTransport({   //connect nodemailer to our gamil account;
         service:"gmail",
         auth:{
             user:"arshadshmim786@gmail.com",
-            pass:"csmc zgbc kuby igrj"
+            pass:"csmc zgbc kuby igrj"      //this password for third party application that i generate
         }
     });
 
-    const mailOptions = {
+    const mailOptions = {                       //configure mail
         from:"arshadshmim786@gmail.com",
         to:receiver,
         subject:subject,
         html:body
     };
 
-    transpoter.sendMail(mailOptions,(err,info)=>{
+    transpoter.sendMail(mailOptions,(err,info)=>{    //send mail 
         if(err)
             console.log(err);
         else
@@ -26,7 +27,6 @@ function sendMail(receiver,subject,body){
 }
 
 function sendEmail(req,res){
-    console.log(req.body)
     const email = req.body.email;
     const subject = "Verify Your Email Address for Lock-It";
     const body=emailFromat;
