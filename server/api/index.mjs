@@ -5,15 +5,16 @@ import { router as handleEmail }  from '../router/email.mjs';
 const app = express();
 app.use(express.json());
 
+app.get("/",(req,res)=>{
+    res.send("hello /");
+    req.end();
+})
+
 app.get("/demo",(req,res)=>{
     res.send("hello /demo ");
     req.end();
 })
 
-app.get("/",(req,res)=>{
-    console.log("hello /");
-    req.end();
-})
 
 app.use("/email",handleEmail);
 
