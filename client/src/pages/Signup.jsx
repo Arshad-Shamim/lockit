@@ -183,3 +183,4 @@ export default function Signup() {
 //so store user from data in database;
 //if successfull signup redirect to home page else email is not verified or server error;
 //for sign in if successfull so redirect else doest have an account
+//now i request to my localhost
