@@ -36,15 +36,15 @@ export default function Signin() {
                     <div className='mt-4'>
                         <form className='col-lg-8 mt-4'>
                             <div class="mb-3">
-                                <label for="exampleInputEmail1" class="form-label">Email/Username</label>
-                                <input type="text" name="email_or_user" onChange={(e)=>handleemail(e)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                                <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
+                                <input type="text" name="email_or_user" onChange={(e)=>handleemail(e)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
                                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                             </div>
                             <div class="mb-3 container">
-                                <label for="exampleInputPassword1" class="form-label d-block">Password</label>
+                                <label for="exampleInputPassword1" class="form-label d-block">Password<span className='text-danger'>*</span></label>
                                 <div className='row'>
                                     <div className='col-10 p-0 m-0'>
-                                        <input type={passwordf?"password":"text"} onChange={(e)=>{setPassword(e.target.value)}} className="form-control" id="exampleInputPassword1"/>
+                                        <input type={passwordf?"password":"text"} onChange={(e)=>{setPassword(e.target.value)}} className="form-control" id="exampleInputPassword1" required/>
                                     </div>
                                     <div className='col-2 p-0 m-0'> 
                                     <span className='ms-2 btn border' onClick={()=>{setPasswordf(!passwordf)}}>
@@ -72,7 +72,7 @@ export default function Signin() {
                         </form>
 
                         <div className="text-center col-lg-8 my-4">
-                            <p>New User? <a href="/signup">Sign up</a></p>
+                            <p>New User? <a href="/signup" className='text-decoration-none'>Sign up</a></p>
                         </div>
                     </div>
                 </div>

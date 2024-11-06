@@ -1,39 +1,32 @@
-import nodemailer from 'nodemailer';    //for send email
-import { emailFromat } from './emailFromet.mjs';
+import { emailFromat,sendMail } from './emailHelper.mjs';
+import { storeToken,verifyEmail as updateStatus } from '../model/email.mjs';
+import jwt from 'jsonwebtoken';
 
-//this function is responsiable for send email to user;
-function sendMail(receiver,subject,body){    
-    const transpoter = nodemailer.createTransport({   //connect nodemailer to our gamil account;
-        service:"gmail",
-        auth:{
-            user:"arshadshmim786@gmail.com",
-            pass:"csmc zgbc kuby igrj"      //this password for third party application that i generate
-        }
-    });
-
-    const mailOptions = {                       //configure mail
-        from:"arshadshmim786@gmail.com",
-        to:receiver,
-        subject:subject,
-        html:body
-    };
-
-    transpoter.sendMail(mailOptions,(err,info)=>{    //send mail 
-        if(err)
-            console.log(err);
-        else
-            console.log(info.response);
-    });
-}
 
 function sendEmail(req,res){
+    const [emailBody,token]=emailFromat(req.body.email);
     const email = req.body.email;
     const subject = "Verify Your Email Address for Lock-It";
-    const body=emailFromat;
+    const body=emailBody;
     const recevier = email;
     sendMail(recevier,subject,body);
+    storeToken(email,token);
     res.end();
 }
 
+function verifyEmail(req,res){     //this route verify user;
+    const token = req.query.token;
+    jwt.verify(token,"verification_link",async (err,email)=>{
+        if(err){
+            console.log("Invalid Email :",err);
+        }
+        else{
+            let msg = await updateStatus(email.email);
+            console.log(msg);
+        };
+    });
 
-export{sendEmail}
+    res.end();
+}
+
+export{sendEmail,verifyEmail};

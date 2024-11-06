@@ -3,13 +3,18 @@ import SignupImg from '../assets/signup.jpg';
 import {Helmet} from 'react-helmet'
 import { useState } from 'react';
 import { varifyEmail } from '../api/signup.mjs';
+import {toast,ToastContainer} from 'react-toastify';    //use for react message;
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function Signup() {
 
-  let [email,setEmail] = useState("");
+  let [form,setForm] = useState({"username":"","email":"","pws":""});
+
   let [passwordf,setPasswordf] = useState(false);
+
   function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function end and mount the page;
-      setEmail(e.target.value);
+      form.email = e.target.value;
+      setForm(form);
       let temp = e.target.value;
       let count=0;
       for(let ch of temp){     //email must be contain excatily one @;
@@ -29,8 +34,48 @@ export default function Signup() {
   }
 
   function handlevarify(){
-    varifyEmail(email);
+    varifyEmail(form.email);
+    notifySucees("email sent successfully !");
   }
+
+  function notifySucees(data){   //create a messge template
+    toast(data,{
+      style:{
+        backgroundColor:'#4CAF50',
+        color:"#FFFFFF",
+      },
+    });
+  };
+
+  function notifyfailer(data){
+    toast(data,{
+      style:{
+        backgroundColor:"red",
+        color:"white"
+      }
+    })
+  }
+
+  function handleSubmit(e){                     //////////i am here 
+    let pws = e.target.password.value;
+    let cpws = e.target.cpassword.value;
+
+    if(pws!=cpws){
+      notifyfailer("password and confirm must be same")
+    }
+    else{
+        setForm({
+          "username":e.target.username.value,
+          "email":e.target.email.value,
+          "pws":e.target.password.value
+        })
+        
+        
+    }
+    e.preventDefault();
+  }
+
+  console.log(form);
 
   return (
     <>
@@ -39,6 +84,7 @@ export default function Signup() {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
           <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet"/>
         </Helmet>
+      <ToastContainer/>     
       <div className='conatiner-fluid row' style={{height:"100%",width:"100%"}}>
 
         <div className='image h-100 col-lg-6 d-none d-lg-block my-auto'>
@@ -51,29 +97,29 @@ export default function Signup() {
               <h1 className='text-center roboto-bold'>Create Your Account</h1>
             </div>
 
-            <form className='roboto-regular'>
+            <form className='roboto-regular' method='POST' onSubmit={handleSubmit}>
               <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label">Username</label>
-                  <input type="email" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                  <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
+                  <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
               </div>
               <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <label for="exampleInputEmail1" class="form-label">Email address<span className='text-danger'>*</span></label>
                 <div className='row'>
                   <div className='col-10 p-0 m-0'>
-                    <input type="email" name="email" className="form-control" onChange={(e)=>handleEmail(e)} id="exampleInputEmail1" aria-describedby="emailHelp"/>
+                    <input type="email" name="email" className="form-control" onChange={(e)=>handleEmail(e)} id="exampleInputEmail1" aria-describedby="emailHelp" required/>
                   </div>
                   <div className='col-2 p-0 m-0'>
-                    <button type="button" id="varify" onClick={handlevarify} className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>Varify</button>
+                    <button type="button" id="varify" onClick={handlevarify} className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>Verify</button>
                   </div>
                 </div>
-                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                <div class="form-text"><input type="checkbox" name="checkverify" value="true" required/> hereby, I declare that i had verify my email</div>
               </div>
 
               <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <label for="exampleInputPassword1" class="form-label">Password<span className='text-danger'>*</span></label>
                 <div className='col-12  row'>
                   <div className='col-11'>
-                    <input type={!passwordf?"password":"text"} name="password" class="form-control" id="exampleInputPassword1"/>
+                    <input type={!passwordf?"password":"text"} name="password" class="form-control" id="exampleInputPassword1" required/>
                   </div>
                   <div className='border col-1 rounded p-0 m-0'>
                     <div className='border h-100 text-center rounded' onClick={()=>setPasswordf(!passwordf)}>
@@ -94,10 +140,10 @@ export default function Signup() {
               </div>
 
               <div class="mb-3">
-                <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                <label for="exampleInputPassword1" name = "cpassword" class="form-label">Confirm Password<span className='text-danger'>*</span></label>
                 <div className='col-12  row'>
                   <div className='col-11'>
-                    <input type={!passwordf?"password":"text"} name="password" class="form-control" id="exampleInputPassword1"/>
+                    <input type={!passwordf?"password":"text"} name="cpassword" class="form-control" id="exampleInputPassword1" required/>
                   </div>
                   <div className='border col-1 rounded p-0 m-0'>
                     <div className='border h-100 text-center rounded' onClick={()=>setPasswordf(!passwordf)}>
@@ -117,12 +163,23 @@ export default function Signup() {
                 </div>
               </div>
               <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="button" style={{backgroundColor:"#683ec5"}}>Submit</button>
+                <button class="btn btn-primary" type="submit" style={{backgroundColor:"#683ec5"}}>Submit</button>
               </div>            
             </form>
+
+            <div className='mt-2 text-center'>
+              <div>Already have an account ?<a href="/signin" className='text-decoration-none'> Sign in</a></div>
+            </div>
           </div>
         </div>
       </div>
     </>
   )
 }
+
+
+
+
+//so store user from data in database;
+//if successfull signup redirect to home page else email is not verified or server error;
+//for sign in if successfull so redirect else doest have an account
