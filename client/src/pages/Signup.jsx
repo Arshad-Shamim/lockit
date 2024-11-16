@@ -1,8 +1,8 @@
 import React from 'react'
 import SignupImg from '../assets/signup.jpg';
-import {Helmet} from 'react-helmet'
+import {Helmet} from 'react-helmet'                  //for mofifing header;
 import { useState } from 'react';
-import { varifyEmail } from '../api/signup.mjs';
+import { varifyEmail,storeUser } from '../api/signup.mjs';
 import {toast,ToastContainer} from 'react-toastify';    //use for react message;
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,7 +24,7 @@ export default function Signup() {
 
       if(count==1){
           let element = document.getElementById("varify");
-          element.classList.remove("disabled");
+          element.classList.remove("disabled");           //handle verify button class list;
       }
       else
       {
@@ -56,7 +56,7 @@ export default function Signup() {
     })
   }
 
-  function handleSubmit(e){                     //////////i am here 
+  async function handleSubmit(e){                     
     let pws = e.target.password.value;
     let cpws = e.target.cpassword.value;
 
@@ -64,18 +64,31 @@ export default function Signup() {
       notifyfailer("password and confirm must be same")
     }
     else{
-        setForm({
+        const temp={
           "username":e.target.username.value,
           "email":e.target.email.value,
           "pws":e.target.password.value
+        }        
+        setForm(temp)
+        
+        storeUser(temp).                       //for get return value from axios async function;
+        then((res)=>{
+          console.log(res);
+          if(res.data=="username already exist")
+            notifyfailer("username already exist");
+          else if(res.data=="email not verified")
+            notifyfailer("email not verified");
+          else if(res.data=="server error")
+            notifyfailer("Server Error ");
+        }).
+        catch((err)=>{
+          console.log(err);
+          notifyfailer("server error");
         })
-        
-        
+
     }
     e.preventDefault();
   }
-
-  console.log(form);
 
   return (
     <>
@@ -184,3 +197,21 @@ export default function Signup() {
 //if successfull signup redirect to home page else email is not verified or server error;
 //for sign in if successfull so redirect else doest have an account
 //now i request to my localhost
+
+
+
+
+// email verifed funcanality:-
+
+//   if user enter excataly one @ in  email input feild then verify button is enabled;
+//  after checking on verify button mail is send to specified email and api store email and status="false"(i.e. email is not verified)
+//  there is a verify link in mail and when user click on that link then api update the status="true" of that email (i.e. email verified) 
+
+
+//username must me unique;
+
+//password and confirm password must be same;
+
+//submit:-
+//  when all input is field , pws and confirm pws same , email is verified then only submit;
+//  after submition delete email and status from table (i.e.) now verify link is expire;

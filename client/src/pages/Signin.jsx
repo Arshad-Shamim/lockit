@@ -5,14 +5,8 @@ import {Helmet} from 'react-helmet';  //for modify head tag;
 export default function Signin() {
     let [passwordf,setPasswordf] = useState(true);
     let [password,setPassword] = useState("");
-    let [email,setEmail]= useState("");
+    let [username,setUsername]= useState("");
 
-    function handleemail(e){
-        let email =e.target.value;
-        if(email.includes('@')){
-            console.log("@");
-        }
-    }
   return (
     <>
     <Helmet>
@@ -37,7 +31,7 @@ export default function Signin() {
                         <form className='col-lg-8 mt-4'>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
-                                <input type="text" name="email_or_user" onChange={(e)=>handleemail(e)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
+                                <input type="text" name="username" onChange={(e)=>setUsername(e.target.value)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
                                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                             </div>
                             <div class="mb-3 container">
