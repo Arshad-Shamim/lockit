@@ -209,6 +209,7 @@ export default function Signup() {
 
 
 //username must me unique;
+//and email also must be unique;
 
 //password and confirm password must be same;
 

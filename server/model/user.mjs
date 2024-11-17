@@ -21,7 +21,7 @@ async function storeUser(form){
     let table = "lockit_usersdata";
 
     form.pws = await bcrypt.hash(form.pws,5);   //there 5 is as a parameter higher strong and lower weak;
-    let query = `create table if not exists ${table}(username varchar(100) primary key,email varchar(100),pws varchar(100))`;
+    let query = `create table if not exists ${table}(username varchar(100) primary key,email varchar(100) unique,pws varchar(100))`;
     let result = await db.query(query);
 
     try{
@@ -31,8 +31,14 @@ async function storeUser(form){
     }
     catch(err){
         if(err.code=='23505'){
-            console.log("username already exist")
-            return "username already exist";
+            if(err.detail=="Key (email)=(arshadshmim786@gmail.com) already exists."){
+                console.log("email already exist");
+                return "email already exist";
+            }
+            else if(err.detail=="Key (username)=(ar83had) already exists."){
+                console.log("username already exist")
+                return "username already exist";
+            }
         }
     }
 }

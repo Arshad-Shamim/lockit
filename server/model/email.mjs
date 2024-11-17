@@ -28,10 +28,16 @@ async function verifyEmail(email){
         let query = `select status from ${table} where email=\'${email}\'`;
     
         let {rows} = await db.query(query);
-        let status = rows[0].status;
-        console.log(status);
+        let status=0;
+        if(rows.length!=0){
+            status = rows[0].status;
+        }
+        else
+            throw "invalid token"
+
+
         if(status==1){
-            return "You are already verified ";
+            return "You are already verified !";
         }
         else{
             query = `update ${table} set status=true where email='${email}'`;
@@ -41,11 +47,24 @@ async function verifyEmail(email){
         }
     }
     catch(err){
+        console.log(err);
         if(err.errno==1146){
             console.log("err lockit_emailverify table is not exist:",err);
             return "invalid token !";
         }
+        else if(err=="invalid token"){
+            return "Token Expired!";
+        }
     }
 }
 
-export{storeToken,verifyEmail};
+async function deleteToken(email){
+    const db = await dbConnect();
+    const table  = "lockit_emailverify"
+
+    let query = `delete from ${table} where email='${email}'`;
+    const result = db.query(query);
+    console.log(result);
+}
+
+export{storeToken,verifyEmail,deleteToken};

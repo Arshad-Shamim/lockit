@@ -18,6 +18,7 @@ return[`
 
 //this function is responsiable for send email to user;
 async function sendMail(receiver,subject,body){    
+    
     const transpoter = nodemailer.createTransport({   //connect nodemailer to our gamil account;
         service:"gmail",
         auth:{

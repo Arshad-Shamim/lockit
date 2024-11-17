@@ -1,4 +1,5 @@
-import { checkStatus,storeUser } from "../model/user.mjs";
+import { checkStatus,storeUser} from "../model/user.mjs";
+import { deleteToken } from "../model/email.mjs";
 
 async function signup(req,res){
     try{
@@ -11,6 +12,8 @@ async function signup(req,res){
             let result = await storeUser(form);
             if(result=="username already exist")
                 res.send(result);
+            
+            await deleteToken(form.email);
         }
     }
     catch(err){
@@ -20,3 +23,9 @@ async function signup(req,res){
 }
 
 export {signup};
+
+
+//signup:-
+//  got form data from client
+//  check email is verified or not (by check status of given email) 
+//  if email is verified then store data and delete token from table (now email verification link is expired );
