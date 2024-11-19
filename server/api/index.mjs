@@ -5,12 +5,17 @@ import {router as handleuser} from '../router/user.mjs';
 import cors from 'cors';    //for get data from client (only get object);
 import ejs from 'ejs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 
 const app = express();
 
 app.set("view engin","ejs");
-app.set("engin",path.resolve("../views"))
+app.set("engin",path.resolve(path.join(__dirname,"views")))
 
 app.use(express.json());
 app.use(cors());
