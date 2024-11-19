@@ -15,7 +15,7 @@ const __dirname = dirname(__filename);
 const app = express();
 
 app.set("view engin","ejs");
-app.set("engin",path.resolve("../views"))
+app.set("engin",path.resolve("var/task/server/views"))
 console.log('Views directory:', path.join(__dirname, 'views'));
 
 app.use(express.json());
