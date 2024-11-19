@@ -4,6 +4,7 @@ function varifyEmail(email){                                //send mail and stor
     axios.post("https://lockit-api.vercel.app/email/verify",{email}).
     then((res)=>{
         console.log("Email sent ");
+        console.log(res);
     }).
     catch((err)=>{
         console.log("error in varifyEmail",err);

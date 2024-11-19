@@ -4,6 +4,7 @@ import { deleteToken } from "../model/email.mjs";
 async function signup(req,res){
     try{
         const form = req.body.form;
+        console.log(form);
         let msg = await checkStatus(form)
         if(!msg){
             res.send("email not verified");
