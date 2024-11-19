@@ -1,16 +1,20 @@
 import React from 'react'
-import SignupImg from '../assets/signup.jpg';
 import {Helmet} from 'react-helmet'                  //for mofifing header;
 import { useState } from 'react';
-import { varifyEmail,storeUser } from '../api/signup.mjs';
 import {toast,ToastContainer} from 'react-toastify';    //use for react message;
 import 'react-toastify/dist/ReactToastify.css';
+import {useNavigate} from "react-router-dom";
+
+import { varifyEmail,storeUser } from '../api/signup.mjs';
+import SignupImg from '../assets/signup.jpg';
 
 export default function Signup() {
 
   let [form,setForm] = useState({"username":"","email":"","pws":""});
 
   let [passwordf,setPasswordf] = useState(false);
+
+  let navigate = useNavigate();
 
   function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function end and mount the page;
       form.email = e.target.value;
@@ -80,6 +84,8 @@ export default function Signup() {
             notifyfailer("email not verified");
           else if(res.data=="server error")
             notifyfailer("Server Error ");
+          else
+            navigate("/home");
         }).
         catch((err)=>{
           console.log(err);

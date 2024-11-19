@@ -1,14 +1,58 @@
 import React, { useState } from 'react'
-import image from '../assets/login.jpg'
 import {Helmet} from 'react-helmet';  //for modify head tag;
+import { useNavigate } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify';
+
+import image from '../assets/login.jpg'
+import { authenticate } from '../api/signin.mjs';
 
 export default function Signin() {
     let [passwordf,setPasswordf] = useState(true);
     let [password,setPassword] = useState("");
     let [username,setUsername]= useState("");
+    let navigate = useNavigate();
+
+    async function handleSubmit(e){
+        const data = { 
+            "username":e.target.username.value,
+            "pws":e.target.pws.value
+        }
+
+        authenticate(data).
+        then((res)=>{
+            if(res.data=="success")
+                notifySuccess("Sign in successfull");
+            else if(res.data=="failer")
+                notifyFailer("Wrong Username or Password");
+        }).
+        catch((err)=>{
+            notifyFailer("Server error !");
+        })
+
+        e.preventDefault();
+    }
+
+    function notifySuccess(data){
+        toast(data,{
+            style:{
+                backgroundColor:'#4CAF50',
+                color:"#FFFFFF",
+            },
+        });
+    }
+
+    function notifyFailer(data){
+        toast(data,{
+            style:{
+                backgroundColor:"red",
+                color:"white",
+            },
+        });
+    }
 
   return (
     <>
+    <ToastContainer/>
     <Helmet>
         <link rel="preconnect" href="https://fonts.googleapis.com"/>
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -28,7 +72,7 @@ export default function Signin() {
                     </div>
 
                     <div className='mt-4'>
-                        <form className='col-lg-8 mt-4'>
+                        <form className='col-lg-8 mt-4' onSubmit={handleSubmit} method='POST'>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
                                 <input type="text" name="username" onChange={(e)=>setUsername(e.target.value)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
@@ -38,7 +82,7 @@ export default function Signin() {
                                 <label for="exampleInputPassword1" class="form-label d-block">Password<span className='text-danger'>*</span></label>
                                 <div className='row'>
                                     <div className='col-10 p-0 m-0'>
-                                        <input type={passwordf?"password":"text"} onChange={(e)=>{setPassword(e.target.value)}} className="form-control" id="exampleInputPassword1" required/>
+                                        <input type={passwordf?"password":"text"} name="pws" onChange={(e)=>{setPassword(e.target.value)}} className="form-control" id="exampleInputPassword1" required/>
                                     </div>
                                     <div className='col-2 p-0 m-0'> 
                                     <span className='ms-2 btn border' onClick={()=>{setPasswordf(!passwordf)}}>
@@ -61,7 +105,7 @@ export default function Signin() {
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" type="button">Sign in</button>
+                                <button class="btn btn-primary" type="submit">Sign in</button>
                             </div>
                         </form>
 
@@ -76,3 +120,9 @@ export default function Signin() {
     </>
   )
 }
+
+
+//submit:-
+//  here client sent username or password to api;
+//  if crediancial is correct then redirect to home page 
+//  else show sign in failer message

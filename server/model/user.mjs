@@ -43,4 +43,18 @@ async function storeUser(form){
     }
 }
 
-export {checkStatus,storeUser}
+
+async function check(data) {
+    const db = dbConnect();
+    let table = "lockit_usersdata";
+    let query = `select * from ${table} where username='${data.username}'`
+    const result = await db.query(query);
+    if(result.rowCount==0)
+        return 0;
+    else{
+        const ret = await bcrypt.compare(data.pws,result.rows[0].pws)
+        return ret;
+    }
+}
+
+export {checkStatus,storeUser,check}
