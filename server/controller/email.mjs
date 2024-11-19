@@ -6,10 +6,16 @@ import ejs from 'ejs';           //for render .ejs file
 import path from 'path';
 import express from 'express';
 
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 const app = express();
 
 app.set("view engin","ejs");               //configure ejs tempplate engin
-app.set("engin",path.resolve("../views"));
+app.set("engin",path.resolve(path.join(__dirname, 'views')))
 
 
 function sendEmail(req,res){
