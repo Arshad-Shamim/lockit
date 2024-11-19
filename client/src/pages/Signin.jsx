@@ -20,8 +20,10 @@ export default function Signin() {
 
         authenticate(data).
         then((res)=>{
-            if(res.data=="success")
+            if(res.data=="success"){
                 notifySuccess("Sign in successfull");
+                navigate("/home")
+            }
             else if(res.data=="failer")
                 notifyFailer("Wrong Username or Password");
         }).
