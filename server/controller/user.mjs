@@ -15,6 +15,7 @@ async function signup(req,res){
             if(result=="username already exist")
                 res.send(result);
             
+            console.log(result);
             await deleteToken(form.email);
         }
     }

@@ -19,7 +19,6 @@ async function checkStatus(form){
 async function storeUser(form){
     const db = await dbConnect();
     let table = "lockit_usersdata";
-    console.log("database connected");
     
     form.pws = await bcrypt.hash(form.pws,5);   //there 5 is as a parameter higher strong and lower weak;
     let query = `create table if not exists ${table}(username varchar(100) primary key,email varchar(100) unique,pws varchar(100))`;
