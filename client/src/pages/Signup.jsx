@@ -77,7 +77,6 @@ export default function Signup() {
         
         storeUser(temp).                       //for get return value from axios async function;
         then((res)=>{
-          console.log(res);
           if(res.data=="username already exist")
             notifyfailer("username already exist");
           else if(res.data=="email not verified")
