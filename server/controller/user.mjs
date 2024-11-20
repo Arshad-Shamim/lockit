@@ -13,10 +13,12 @@ async function signup(req,res){
             let result = await storeUser(form);
             if(result=="username already exist" || result=="email already exist")
                 res.send(result);
-            
-            await deleteToken(form.email);
-            return "sign up Successfull";
+            else{
+                await deleteToken(form.email);
+                res.send("sign up successfull");
+            }
         }
+
     }
     catch(err){
         console.log("controller/user/signup :",err);
