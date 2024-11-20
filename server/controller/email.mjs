@@ -15,7 +15,7 @@ const __dirname = dirname(__filename);
 const app = express();
 
 app.set("view engin","ejs");               //configure ejs tempplate engin
-app.set("engin",path.resolve("/var/task/views"));
+app.set("engin",path.resolve("/var/task/server/views"));
 console.log(path.join(__dirname, 'views'));
 
 
