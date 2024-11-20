@@ -14,9 +14,9 @@ const __dirname = dirname(__filename);
 
 const app = express();
 
-app.set("view engin","ejs");
-app.set("engin",path.resolve(path.join(__dirname, 'views')))
-console.log('Views directory:', path.join(__dirname, 'views'));
+// app.set("view engin","ejs");
+// app.set("engin",path.resolve(path.join(__dirname, 'views')))
+// console.log('Views directory:', path.join(__dirname, 'views'));
 
 app.use(express.json());
 app.use(cors());
