@@ -63,7 +63,7 @@ async function deleteToken(email){
     const table  = "lockit_emailverify"
 
     let query = `delete from ${table} where email='${email}'`;
-    const result = db.query(query);
+    const result = await db.query(query);
     console.log(result);
 }
 
