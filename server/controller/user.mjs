@@ -11,8 +11,12 @@ async function signup(req,res){
         }
         else{
             let result = await storeUser(form);
-            if(result=="username already exist" || result=="email already exist")
+            if(result=="username already exist")
                 res.send(result);
+            else if(result=="email already exist"){
+                await deleteToken(form.email);
+                res.send("email already exist");
+            }
             else{
                 await deleteToken(form.email);
                 res.send("sign up successfull");
