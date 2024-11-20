@@ -3,7 +3,7 @@ import express, { urlencoded } from 'express'
 import { router as handleEmail }  from '../router/email.mjs';
 import {router as handleuser} from '../router/user.mjs';
 import cors from 'cors';    //for get data from client (only get object);
-import ejs from 'ejs';
+import ejs from 'ejs';         //for render ejs file
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -16,7 +16,6 @@ const app = express();
 
 app.set("view engin","ejs");
 app.set("views",path.resolve(path.join(__dirname, '../views')))
-console.log('Views directory:', path.join(__dirname, '../views'));
 
 app.use(express.json());
 app.use(cors());

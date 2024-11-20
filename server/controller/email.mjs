@@ -2,33 +2,19 @@ import { emailFromat,sendMail } from './emailHelper.mjs';  //for sending mail
 import { storeToken,verifyEmail as updateStatus } from '../model/email.mjs';
 
 import jwt from 'jsonwebtoken';  //for encode or decode email;
-import ejs from 'ejs';           //for render .ejs file
-import path from 'path';
 import express from 'express';
-
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const app = express();
 
-// app.set("view engin","ejs");               //configure ejs tempplate engin
-// // app.set("engin",path.resolve(path.join(__dirname, '../views')));
-// app.set("views",path.resolve(path.join(__dirname, '../views')));
-// console.log(path.join(__dirname, '../views'));
-
-
-function sendEmail(req,res){
+async function sendEmail(req,res){
     try{
         const [emailBody,token]=emailFromat(req.body.email);
         const email = req.body.email;
         const subject = "Verify Your Email Address for Lock-It";
         const body=emailBody;
         const recevier = email;
-        sendMail(recevier,subject,body);
-        storeToken(email,token);
+        await sendMail(recevier,subject,body);
+        await storeToken(email,token);
         res.end();
     }
     catch(err){
