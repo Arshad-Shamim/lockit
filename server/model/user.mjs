@@ -32,11 +32,11 @@ async function storeUser(form){
     catch(err){
         console.log(err);
         if(err.code=='23505'){
-            if(err.detail=="Key (email)=(arshadshmim786@gmail.com) already exists."){
+            if(err.detail==`Key (email)=(${form.email}) already exists.`){
                 console.log("email already exist");
                 return "email already exist";
             }
-            else if(err.detail=="Key (username)=(ar83had) already exists."){
+            else if(err.detail==`Key (username)=(${form.username}) already exists.`){
                 console.log("username already exist")
                 return "username already exist";
             }
