@@ -11,11 +11,11 @@ async function signup(req,res){
         }
         else{
             let result = await storeUser(form);
-            console.log(result);
-            if(result=="username already exist")
+            if(result=="username already exist" || result=="email already exist")
                 res.send(result);
             
             await deleteToken(form.email);
+            return "sign up Successfull";
         }
     }
     catch(err){

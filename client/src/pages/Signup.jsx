@@ -84,6 +84,10 @@ export default function Signup() {
             notifyfailer("email not verified");
           else if(res.data=="server error")
             notifyfailer("Server Error ");
+          else if(res.data=="email already exist")
+            notifyfailer("email already exist");
+          else
+            notifySucees("sign up successfull");
         }).
         catch((err)=>{
           console.log(err);
