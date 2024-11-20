@@ -84,8 +84,6 @@ export default function Signup() {
             notifyfailer("email not verified");
           else if(res.data=="server error")
             notifyfailer("Server Error ");
-          else  
-            console.log(res);
         }).
         catch((err)=>{
           console.log(err);

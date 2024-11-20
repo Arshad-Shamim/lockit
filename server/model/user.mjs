@@ -30,6 +30,7 @@ async function storeUser(form){
         console.log("value inserted !");
     }
     catch(err){
+        console.log(err);
         if(err.code=='23505'){
             if(err.detail=="Key (email)=(arshadshmim786@gmail.com) already exists."){
                 console.log("email already exist");
