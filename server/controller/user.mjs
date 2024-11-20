@@ -6,6 +6,7 @@ async function signup(req,res){
         const form = req.body.form;
         console.log(form);
         let msg = await checkStatus(form)
+        console.log(msg);
         if(!msg){
             res.send("email not verified");
         }
