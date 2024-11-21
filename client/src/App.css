@@ -1,10 +1,12 @@
 
+  /* for form and home*/
   .roboto-regular {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
     font-style: normal;
   }
   
+  /* for form and home*/
   .roboto-bold {
     font-family: "Roboto", sans-serif;
     font-weight: 700;
@@ -17,5 +19,14 @@
       padding-top: 7vh;
     }
   }
+
+  /* homepage lockit brand name */
+  .permanent-marker-regular {    
+    font-family: "Permanent Marker", cursive;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  
   
   

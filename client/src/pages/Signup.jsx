@@ -86,7 +86,7 @@ export default function Signup() {
           else if(res.data=="email already exist")
             notifyfailer("email already exist");
           else
-            notifySucees("sign up successfull");
+            navigate("/home");
         }).
         catch((err)=>{
           console.log(err);
