@@ -77,15 +77,16 @@ export default function Signup() {
         
         storeUser(temp).                       //for get return value from axios async function;
         then((res)=>{
-          if(res=="username already exist")
-            notifyfailer("username already exist");
-          else if(res=="email not verified")
+          console.log(res=="email not verified!");
+          if(res=="username already exist!")
+            notifyfailer("username already exist!");
+          else if(res=="email not verified!")
             notifyfailer("email not verified");
-          else if(res=="server error")
+          else if(res=="server error!")
             notifyfailer("Server Error ");
-          else if(res=="email already exist")
+          else if(res=="email already exist!")
             notifyfailer("email already exist");
-          else
+          else if(res=="signup successfully!")
             navigate("/home");
         }).
         catch((err)=>{

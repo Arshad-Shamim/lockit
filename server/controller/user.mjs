@@ -15,7 +15,7 @@ async function signup(req,res){
         else{
             let result = await storeUser(form);
             if(result=="username already exist")
-                json.msg=result;
+                json.msg="username already exist!";
             else if(result=="email already exist"){
                 await deleteToken(form.email);
                 json.msg="email already exist!";
@@ -29,12 +29,11 @@ async function signup(req,res){
             }
         }
 
+        res.json(json);
     }
     catch(err){
         console.log("controller/user/signup :",err);
         json.msg="Server error!";
-    }
-    finally{
         res.json(json);
     }
 }
@@ -74,7 +73,6 @@ async function signin(req,res){
 
 
 async function validateToken(req,res){
-    console.log({"authorize":true});
     res.json({"authorize":true});
 }
 
