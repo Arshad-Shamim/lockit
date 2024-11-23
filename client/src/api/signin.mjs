@@ -8,7 +8,14 @@ async function authenticate(data){
         }
     }).
     then((res)=>{
-        return res
+        res=res.data;
+        
+        if(res.token){
+            sessionStorage.setItem("token",res.token);
+            sessionStorage.setItem("username",data.username);
+        }
+
+        return res.msg;
     }).
     catch((err)=>{
         return err;

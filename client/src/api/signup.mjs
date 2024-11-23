@@ -15,7 +15,15 @@ function varifyEmail(email){                                //send mail and stor
 function storeUser(form){                   //store user and handle any error (unique username...);
     return axios.post("https://lockit-api.vercel.app/user/signup/store",{form}). 
     then((res)=>{
-        return res;
+        res=res.data;
+
+        console.log(res.token);
+        if(res.token){
+            sessionStorage.setItem("token",res.token);
+            sessionStorage.setItem("username",data.username);
+        }
+
+        return res.msg;
     }).
     catch((err)=>{
         return err;

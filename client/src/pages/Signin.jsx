@@ -20,11 +20,11 @@ export default function Signin() {
 
         authenticate(data).
         then((res)=>{
-            if(res.data=="success"){
+            if(res=="success"){
                 notifySuccess("Sign in successfull");
                 navigate("/home")
             }
-            else if(res.data=="failer")
+            else if(res=="failer")
                 notifyFailer("Wrong Username or Password");
         }).
         catch((err)=>{
@@ -126,5 +126,5 @@ export default function Signin() {
 
 //submit:-
 //  here client sent username or password to api;
-//  if crediancial is correct then redirect to home page 
+//  if crediancial is correct then redirect to home page and create a session and store token and username there;
 //  else show sign in failer message

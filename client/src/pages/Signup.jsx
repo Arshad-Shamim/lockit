@@ -77,13 +77,13 @@ export default function Signup() {
         
         storeUser(temp).                       //for get return value from axios async function;
         then((res)=>{
-          if(res.data=="username already exist")
+          if(res=="username already exist")
             notifyfailer("username already exist");
-          else if(res.data=="email not verified")
+          else if(res=="email not verified")
             notifyfailer("email not verified");
-          else if(res.data=="server error")
+          else if(res=="server error")
             notifyfailer("Server Error ");
-          else if(res.data=="email already exist")
+          else if(res=="email already exist")
             notifyfailer("email already exist");
           else
             navigate("/home");
@@ -223,3 +223,4 @@ export default function Signup() {
 //submit:-
 //  when all input is field , pws and confirm pws same , email is verified then only submit;
 //  after submition delete email and status from table (i.e.) now verify link is expire;
+//  then create session and store token and username there;

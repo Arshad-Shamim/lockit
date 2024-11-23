@@ -20,8 +20,19 @@ app.set("views",path.resolve(path.join(__dirname, '../views')))
 app.use(express.json());
 app.use(cors());
 
+app.use("/authorization",handleuser);
 app.use("/email",handleEmail);
 app.use("/user",handleuser);
+
+app.use((err,req,res,next)=>{
+    if(err.name=="UnauthorizedError"){
+        console.log(err.name);
+        res.json({"authorize":false});
+    }
+    
+    console.log(err);
+    res.end();
+})
 
 app.listen(2000,(err)=>{
     if(err) 
