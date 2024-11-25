@@ -2,6 +2,21 @@ import React from 'react'
 
 export default function Error({msg}) {
   return (
-    <div>{msg}</div>
+    <>
+      <div className='bg-danger' style={{height:"100vh"}}>
+        <div class="text-center" style={{paddingTop:"15vh"}} > 
+          <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4m.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2"/>
+          </svg>
+        </div>
+        
+        <div class="text-center text-white fs-1" style={{marginTop:"10vh"}}>
+          {msg}
+        </div>
+      </div>
+    </>
   )
 }
+
+//when wrong url entered
+//whe we try access pages with out sign or sign up;

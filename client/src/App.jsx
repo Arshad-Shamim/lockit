@@ -7,6 +7,7 @@ import {Routes,Route,Navigate} from 'react-router-dom';
 import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Home from './pages/Home.jsx';
+import Error  from './pages/Error.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -18,6 +19,7 @@ function App() {
         <Route path="/signin" element={<Signin/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/home" element={<Home/>}/>
+        <Route path="/*" element={<Error msg={"Page not founded!"}/>}/>
       </Routes>
     </>
   )
