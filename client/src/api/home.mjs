@@ -23,7 +23,7 @@ async function authorization(){
 }
 
 async function randomPws(){
-    return axios.get("http://localhost:2000/randompws").
+    return axios.get("https://lockit-api.vercel.app/randompws").
     then((res)=>{
         return res.data.pws;
     }).
