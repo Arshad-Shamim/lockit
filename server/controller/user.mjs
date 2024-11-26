@@ -2,6 +2,7 @@ import { checkStatus,storeUser,check} from "../model/user.mjs";
 import { deleteToken } from "../model/email.mjs";
 
 import jwt from 'jsonwebtoken' ;       //for generating token
+import crypto from 'crypto';               //for generate pws;
 
 async function signup(req,res){
     const json={};
@@ -76,7 +77,29 @@ async function validateToken(req,res){
     res.json({"authorize":true});
 }
 
-export {signup,signin,validateToken};
+async function generatePws(req,res){
+    try{
+        let length =12;
+        let chars ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?';
+    
+        let pws = "";
+    
+        for(let c1=0;c1<length;c1++){
+            let index=crypto.randomInt(0,chars.length);
+            pws+=chars[index];
+        }
+    
+        console.log("password generated :",pws);
+        let json={"pws":pws};
+        res.json(json);
+    }
+    catch(err){
+        console.log("Server error server/constroller/user.mjs",err);
+        res.send(err);
+    }
+}
+
+export {signup,signin,validateToken,generatePws};
 
 
 //signup:-
@@ -93,3 +116,7 @@ export {signup,signin,validateToken};
 //AuthenticateToken:-
 //  if token is valid then send a positive response;
 //  else send false;
+
+
+//generatepws:-
+//  genearte a random pws of 12 length;

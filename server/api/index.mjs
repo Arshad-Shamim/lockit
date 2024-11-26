@@ -23,6 +23,7 @@ app.use(cors());
 app.use("/authorization",handleuser);
 app.use("/email",handleEmail);
 app.use("/user",handleuser);
+app.get("/randompws",handleuser);
 
 app.use((err,req,res,next)=>{
     if(err.name=="UnauthorizedError"){

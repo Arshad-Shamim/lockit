@@ -1,17 +1,38 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom';
 import { useState } from 'react';
+import { ToastContainer,toast } from 'react-toastify';    //notification
 
 import {authorization} from '../api/home.mjs';   //for authorize user;
 import Error from "./Error.jsx";
+import {randomPws as generatePws} from '../api/home.mjs';
 
 
 export default function Home() {
 
   let [authorize,setAuthorize]=useState(true);  
-  let [pwsshow,setPwsshow]=useState(true);  
+  let [pwsshow,setPwsshow]=useState(true);          //both random pws and user input store here;
   let [pws,setPws] =useState("");
   let navigate = useNavigate();
+
+  
+  function notifySuccess(data){
+    toast(data,{
+        style:{
+            backgroundColor:'#4CAF50',
+            color:"#FFFFFF",
+        },
+    });
+}
+
+function notifyFailer(data){
+    toast(data,{
+        style:{
+            backgroundColor:"red",
+            color:"white",
+        },
+    });
+}
 
   async function callAuthorization(){
     let temp = await authorization();
@@ -26,12 +47,18 @@ export default function Home() {
     return;
   }
 
-  function randomPws(){
-    
+  async function randomPws(){             //cal api from random generated pws;
+    let temppws = await generatePws();
+
+    console.log(temppws);
+    if(temppws)
+      setPws(temppws);
+    else
+      notifyFailer("Server Error!");
   }
 
   function handleSubmit(e){
-    e.target.pws.value=pws;
+    e.target.pws.value=pws;                       //store both input as well as random pws into pws.value;
     console.log(e.target.pws.value);
     e.preventDefault();
   }
@@ -42,6 +69,8 @@ export default function Home() {
   else{
     return (
       <>
+        <ToastContainer/>     
+
             {/* nav bar */}
 
         <nav className="navbar navbar-expand-lg navbar-dark bg-success roboto-regular">
@@ -111,7 +140,7 @@ export default function Home() {
                     <div class="mb-3 col-12 row">
                         <label for="exampleInputPassword1" class="form-label">Enter Password</label>
                         <div className="col-lg-8 col-12 ps-2 pe-0">
-                            <input type="text" name="pws" onChange={(e)=>setPws(e.target.value)} class="form-control" id="exampleInputPassword1" style={{backgroundColor:"#a0ebc0"}}/>
+                            <input type="text" name="pws" value={pws} onChange={(e)=>setPws(e.target.value)} class="form-control" id="exampleInputPassword1" style={{backgroundColor:"#a0ebc0"}}/>
                         </div>
 
                         <div className="col-lg-4 col-12 mt-1 mt-lg-0  ps-2">
@@ -155,3 +184,8 @@ export default function Home() {
 
 //signout:-
 //  clear/delete session
+
+//pws:-
+//  if user click on generate pws button then call api for pws and upate pws state;
+//  else user can also enter pws my self;
+//  and on submit replace this pws state with e.target.pws.value;

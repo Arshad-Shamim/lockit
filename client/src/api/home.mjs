@@ -22,4 +22,15 @@ async function authorization(){
     }
 }
 
-export{authorization};
+async function randomPws(){
+    return axios.get("http://localhost:2000/randompws").
+    then((res)=>{
+        return res.data.pws;
+    }).
+    catch((err)=>{
+        console.log(err);
+        return false;
+    })
+}
+
+export{authorization,randomPws};
