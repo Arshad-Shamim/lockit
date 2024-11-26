@@ -6,7 +6,7 @@ async function authorization(){
     if(!token)
         return false;
     else{
-        return axios.get("http://localhost:2000/authorization",{
+        return axios.get("https://lockit-api.vercel.app/authorization",{
             headers:{
                 Authorization:`Bearer ${token}`
             }
