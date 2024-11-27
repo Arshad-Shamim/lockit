@@ -14,3 +14,6 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter>
   </StrictMode>
 )
+
+
+//all font are define in app.css
