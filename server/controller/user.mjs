@@ -1,46 +1,58 @@
-import { checkStatus,storeUser,check} from "../model/user.mjs";
+import { checkStatus,storeUser,check,storeData as store} from "../model/user.mjs";
 import { deleteToken } from "../model/email.mjs";
 
 import jwt from 'jsonwebtoken' ;       //for generating token
 import crypto from 'crypto';               //for generate pws;
 
 async function signup(req,res){
+    console.log("controller/user.mjs/signup");
     const json={};
+
     try{
         const form = req.body.form;
-        console.log(form);
-        let msg = await checkStatus(form)
-        if(!msg){
+        let result = await checkStatus(form)
+
+        if(!result){
             json.msg="email not verified!";
+            json.status=0;
         }
         else{
             let result = await storeUser(form);
-            if(result=="username already exist")
+            if(result=="username already exist"){
+                json.status=0;
                 json.msg="username already exist!";
+            }
             else if(result=="email already exist"){
                 await deleteToken(form.email);
+                console.log("token deleted :",form.email);
+                json.status=0;
                 json.msg="email already exist!";
             }
             else{
                 await deleteToken(form.email);
+                console.log("token deleted",form.email);
                 const token = jwt.sign({"username":form.username},"hello user");
+                console.log("token generated :",token);
                 json.msg="signup successfully!";
-                console.log("token generated!");
+                json.status=1;
                 json.token=token;
             }
+
         }
 
-        res.json(json);
     }
     catch(err){
         console.log("controller/user/signup :",err);
         json.msg="Server error!";
-        res.json(json);
+        json.status=0;
     }
+
+    res.json(json);
 }
 
 
 async function signin(req,res){
+    console.log("users/signin.mjs");
     const json = {};
     try{
         const data = {
@@ -52,24 +64,27 @@ async function signin(req,res){
 
         if(result){
             console.log("signin succesfully");
-            json.msg="success";
+            json.msg="signin succesfully";
             delete data.pws;
             const token = jwt.sign(data,"hello user");
             console.log("token generated!");
+            json.status=1;
             json.token=token;
         }
         else{
             console.log("sginin failed");
-            json.msg="failer";
+            json.status=0;
+            json.msg="username or password incorrect";
         }
-        console.log(json);
-        res.json(json);
     }
     catch(err){
         console.log("err (controller/user.mjs/signin):",err);
         json["msg"]="Server Error";
-        res.end()
+        json.status=0;
     }
+
+    console.log("users/sigin return",json);
+    res.json(json);
 }
 
 
@@ -99,7 +114,26 @@ async function generatePws(req,res){
     }
 }
 
-export {signup,signin,validateToken,generatePws};
+async function storeData(req,res){
+    console.log("/controller/users.mjs/storeData")
+    const json={};
+    json.authorize=true;
+    try{
+        const data=req.body.data;
+        const result = await store(data);
+        json.msg="data stored Successfully";
+        json.status=1;
+        res.json(json);
+    }
+    catch(err){
+        console.log("err :server/contrller/user.mjs :",err);
+        json.msg="Server Error";
+        json.status=0;
+        res.json(json);
+    }
+}
+
+export {signup,signin,validateToken,generatePws,storeData};
 
 
 //signup:-
@@ -120,3 +154,7 @@ export {signup,signin,validateToken,generatePws};
 
 //generatepws:-
 //  genearte a random pws of 12 length;
+
+//store data:-
+//  get data from client and store them;
+//  and prepare json;

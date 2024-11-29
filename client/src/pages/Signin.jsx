@@ -13,6 +13,7 @@ export default function Signin() {
     let navigate = useNavigate();
 
     async function handleSubmit(e){
+        console.log("/signin/handleSubmit");
         const data = { 
             "username":e.target.username.value,
             "pws":e.target.pws.value
@@ -20,21 +21,27 @@ export default function Signin() {
 
         authenticate(data).
         then((res)=>{
-            if(res=="success"){
-                notifySuccess("Sign in successfull");
+            if(res.status){
+                console.log(`username ${data.username} is authorized`);
+                notifySuccess(res.msg);
+                console.log("navigate to /home");
                 navigate("/home")
             }
-            else if(res=="failer")
-                notifyFailer("Wrong Username or Password");
+            else{
+                console.log(`username=${data.username} is not authorized`);
+                notifyFailer(res.msg);
+            }
         }).
         catch((err)=>{
-            notifyFailer("Server error !");
+            console.log("err page/signin/handleSubmit :Some wrong on client")
+            notifyFailer("something went wrong!");
         })
 
         e.preventDefault();
     }
 
     function notifySuccess(data){
+        console.log("notify success :",data);
         toast(data,{
             style:{
                 backgroundColor:'#4CAF50',
@@ -44,6 +51,7 @@ export default function Signin() {
     }
 
     function notifyFailer(data){
+        console.log("notify failer :",data);
         toast(data,{
             style:{
                 backgroundColor:"red",

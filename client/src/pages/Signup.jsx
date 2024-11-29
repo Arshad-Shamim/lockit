@@ -17,6 +17,7 @@ export default function Signup() {
   let navigate = useNavigate();
 
   function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function end and mount the page;
+      console.log("signup/handleemail");
       form.email = e.target.value;
       setForm(form);
       let temp = e.target.value;
@@ -29,20 +30,34 @@ export default function Signup() {
       if(count==1){
           let element = document.getElementById("varify");
           element.classList.remove("disabled");           //handle verify button class list;
+          console.log(`${temp} valid email`);
       }
       else
       {
         let element=document.getElementById("varify");
         element.classList.add("disabled")
+        console.log(`${temp} invalid email`);
       }
   }
 
   function handlevarify(){
-    varifyEmail(form.email);
-    notifySucees("email sent successfully !");
+    varifyEmail(form.email).
+    then((res)=>{
+      if(res.status){
+        notifySucees(res.msg);
+      }
+      else{
+        notifyfailer(res.msg);
+      }
+    })
+    .catch((err)=>{
+      notifyfailer("some thing went wrong!");
+      console.log(err);
+    })
   }
 
   function notifySucees(data){   //create a messge template
+    console.log("notify success :",data);
     toast(data,{
       style:{
         backgroundColor:'#4CAF50',
@@ -52,6 +67,7 @@ export default function Signup() {
   };
 
   function notifyfailer(data){
+    console.log("notify failer :",data);
     toast(data,{
       style:{
         backgroundColor:"red",
@@ -77,17 +93,16 @@ export default function Signup() {
         
         storeUser(temp).                       //for get return value from axios async function;
         then((res)=>{
-          console.log(res=="email not verified!");
-          if(res=="username already exist!")
-            notifyfailer("username already exist!");
-          else if(res=="email not verified!")
-            notifyfailer("email not verified");
-          else if(res=="server error!")
-            notifyfailer("Server Error ");
-          else if(res=="email already exist!")
-            notifyfailer("email already exist");
-          else if(res=="signup successfully!")
-            navigate("/home");
+
+          if(res.status){
+            notifySucees(res.msg);
+            if(res.msg=="signup successfully!")
+              navigate("/home");
+
+          }
+          else
+            notifyfailer(res.msg);
+
         }).
         catch((err)=>{
           console.log(err);

@@ -28,7 +28,7 @@ app.get("/randompws",handleuser);
 app.use((err,req,res,next)=>{
     if(err.name=="UnauthorizedError"){
         console.log(err.name);
-        res.json({"authorize":false});
+        res.json({"authorize":false,"status":0,"msg":"Not Authorized"});
     }
     
     console.log(err);

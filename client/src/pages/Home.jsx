@@ -3,9 +3,8 @@ import {useNavigate} from 'react-router-dom';
 import { useState } from 'react';
 import { ToastContainer,toast } from 'react-toastify';    //notification
 
-import {authorization} from '../api/home.mjs';   //for authorize user;
+import {authorization,randomPws as generatePws,storeData} from '../api/home.mjs';   //for authorize user;
 import Error from "./Error.jsx";
-import {randomPws as generatePws} from '../api/home.mjs';
 
 
 export default function Home() {
@@ -50,7 +49,6 @@ function notifyFailer(data){
   async function randomPws(){             //cal api from random generated pws;
     let temppws = await generatePws();
 
-    console.log(temppws);
     if(temppws){
       setPws(temppws);
     }
@@ -58,9 +56,29 @@ function notifyFailer(data){
       notifyFailer("Server Error!");
   }
 
-  function handleSubmit(e){
+  async function handleSubmit(e){
     e.target.pws.value=pws;                       //store both input as well as random pws into pws.value;
-    console.log(e.target.pws.value);
+
+    const data = {
+      "username":sessionStorage.getItem("username"),
+      "user_indentifier":e.target.user_indentifier.value,
+      "pws":e.target.pws.value,
+      "url":e.target.url.value
+    }
+
+    storeData(data).
+    then((res)=>{
+      if(res.status){
+        notifySuccess(res.msg);
+        e.target.reset();
+      }
+      else
+        notifyFailer(res.msg);
+    }).
+    catch((err)=>{
+      notifyFailer("Some Went Wrong !");
+    });
+
     e.preventDefault();
   }
 
@@ -155,8 +173,8 @@ function notifyFailer(data){
                 <form onSubmit={handleSubmit} method="POST">
 
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">Enter Username </label>
-                        <input type="text" name="username" class="form-control" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}}/>
+                        <label for="exampleInputEmail1" class="form-label">Enter User Identifier</label>
+                        <input type="text" name="user_indentifier" class="form-control fw-light" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: username,phone no,email id' />
                     </div>
 
                     <div class="mb-3 col-12 row">
@@ -164,7 +182,7 @@ function notifyFailer(data){
 
                         <div className="col-lg-8 col-12 ps-2 pe-0 row"> 
                           <div className='col-9 pe-0'>
-                            <input type="text" name="pws" value={pws} onChange={(e)=>setPws(e.target.value)} class="form-control" id="exampleInputPassword1" style={{backgroundColor:"#a0ebc0"}}/>
+                            <input type="text" name="pws" value={pws} onChange={(e)=>setPws(e.target.value)} class="form-control fs-6" id="exampleInputPassword1" style={{backgroundColor:"#a0ebc0"}} placeholder='*************'/>
                           </div>
                           <div className='col-2 px-2 text-center pt-1 ms-2 border rounded btn text-white' id="copy" onClick={handleCopy} >
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
@@ -180,7 +198,7 @@ function notifyFailer(data){
 
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Enter U.R.L. </label>
-                        <input type="text" name="url" class="form-control" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}}/>
+                        <input type="text" name="url" class="form-control fs-7 fw-light" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: https://xyz.com/signin'/>
                     </div>
 
                     <div class="d-grid gap-2">
@@ -194,6 +212,10 @@ function notifyFailer(data){
                     </div>
              </form>
             </div>
+        </div>
+
+        <div>
+
         </div>
 
             {/* developer */}
@@ -226,3 +248,7 @@ function notifyFailer(data){
 //      copy pws and change bg-color after 1s (useing setTimeout) change bg-color to previous color;
 
 //get username from session and display it;
+
+//store data(form data):-
+//  call api with data and token;
+//  and according to status memeber of json display msg;

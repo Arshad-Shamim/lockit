@@ -7,6 +7,7 @@ import express from 'express';
 const app = express();
 
 async function sendEmail(req,res){
+    const json={};
     try{
         const [emailBody,token]=emailFromat(req.body.email);
         const email = req.body.email;
@@ -15,12 +16,17 @@ async function sendEmail(req,res){
         const recevier = email;
         await sendMail(recevier,subject,body);
         await storeToken(email,token);
-        res.end();
+        json.msg="Email sent Successfully";
+        json.status=1;
     }
     catch(err){
         console.log("cotroller/email/sendemail :",err);
-        res.send("server error");
+        json.status=0;
+        json.msg="Server Error";
     }
+
+    console.log("email/sendEmail return",json);
+    res.json(json);
 }
 
 function verifyEmail(req,res){     //this route verify user;

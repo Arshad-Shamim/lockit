@@ -33,4 +33,23 @@ async function randomPws(){
     })
 }
 
-export{authorization,randomPws};
+function storeData(data){
+    return axios.post("http://localhost:2000/user/data/store",{data},{
+        headers:{
+            authorization:`Bearer ${sessionStorage.getItem("token")}`
+        }
+    }).
+    then((res)=>{
+        res=res.data;
+        return res;
+    }).
+    catch((err)=>{
+        console.log(err);
+        return res;
+    })
+}
+
+export{authorization,randomPws,storeData};
+
+
+// now i got json data {status,msg} format this two member is fixed!;
