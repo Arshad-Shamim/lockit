@@ -1,4 +1,4 @@
-import { checkStatus,storeUser,check,storeData as store} from "../model/user.mjs";
+import { checkStatus,storeUser,check,storeData as store,fetchUserdata} from "../model/user.mjs";
 import { deleteToken } from "../model/email.mjs";
 
 import jwt from 'jsonwebtoken' ;       //for generating token
@@ -133,7 +133,31 @@ async function storeData(req,res){
     }
 }
 
-export {signup,signin,validateToken,generatePws,storeData};
+async function getData(req,res){
+    console.log("constroller/user/getData ");
+    const json={"authorize":1};
+    try{
+        const username = req.query.username;
+        const result = await fetchUserdata(username);
+        json.status=1;
+        result.rows=result.rows.map((obj)=>{
+            obj.pws=Buffer.from(obj.pws,'base64').toString('utf8');
+            return obj;
+        })
+        json.msg="data fetch successfully!";
+        json.data=result.rows;
+    }
+    catch(err){
+        console.log("err :controller/user/getData ",err);
+        json.status=0;
+        json.msg="Server Error";
+    }
+
+    console.log("response :pass",);
+    res.json(json);
+}
+
+export {signup,signin,validateToken,generatePws,storeData,getData};
 
 
 //signup:-
@@ -157,4 +181,5 @@ export {signup,signin,validateToken,generatePws,storeData};
 
 //store data:-
 //  get data from client and store them;
+//  here we encode data by Buffer.from(data).toString('base64');
 //  and prepare json;

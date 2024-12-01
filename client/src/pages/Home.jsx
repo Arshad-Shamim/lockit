@@ -1,20 +1,46 @@
 import React from 'react'
 import {useNavigate} from 'react-router-dom';
-import { useState } from 'react';
+import { useState,useEffect} from 'react';
 import { ToastContainer,toast } from 'react-toastify';    //notification
 
-import {authorization,randomPws as generatePws,storeData} from '../api/home.mjs';   //for authorize user;
+import {authorization,randomPws as generatePws,storeData,getData} from '../api/home.mjs';   //for authorize user;
 import Error from "./Error.jsx";
 
 
 export default function Home() {
 
   let [authorize,setAuthorize]=useState(true);  
-  let [pwsshow,setPwsshow]=useState(true);          //both random pws and user input store here;
   let [pws,setPws] =useState("");
   let navigate = useNavigate();
   let [username,setUsername]=useState(sessionStorage.getItem("username"));
-  
+  let [data,setData]=useState([]);
+  let [tablepws,setTablepws]=useState(-1);
+
+  useEffect(()=>{
+    console.log("useEffect() :")
+    updateData();
+  },[])
+
+  function updateData(){
+    console.log("updateData :");
+    const token=sessionStorage.getItem("token");
+    const username = sessionStorage.getItem("username");
+
+    getData(token,username).
+    then((res)=>{
+      if(res.status){
+        setData(res.data);
+      }
+      else{
+        notifyFailer(res.msg);
+      }
+    }).
+    catch((err)=>{
+      console.log("pages/home",err);
+      notifyFailer("Something went wrong!");
+    })
+  }
+
   function notifySuccess(data){
     toast(data,{
         style:{
@@ -70,6 +96,8 @@ function notifyFailer(data){
     then((res)=>{
       if(res.status){
         notifySuccess(res.msg);
+        updateData();
+        setPws("");
         e.target.reset();
       }
       else
@@ -94,6 +122,10 @@ function notifyFailer(data){
       element.style.backgroundColor="#198754";
     },800);
   }
+  
+  async function viewPws(index){
+    setTablepws(index);
+  }
 
   if(!authorize){
     return(<Error msg={"Please log in to continue...."}/>)
@@ -110,7 +142,7 @@ function notifyFailer(data){
             <svg xmlns="http://www.w3.org/2000/svg" width="60" height="38" fill="currentColor" class="bi bi-person-fill-lock" viewBox="0 0 16 16">
                 <path d="M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0m-9 8c0 1 1 1 1 1h5v-1a2 2 0 0 1 .01-.2 4.49 4.49 0 0 1 1.534-3.693Q8.844 9.002 8 9c-5 0-6 3-6 4m7 0a1 1 0 0 1 1-1v-1a2 2 0 1 1 4 0v1a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1zm3-3a1 1 0 0 0-1 1v1h2v-1a1 1 0 0 0-1-1"/>
             </svg>
-            <span className="navbar-brand fw-bold fs-3 permanent-marker-regular ">
+            <span className="navbar-brand fw-bold fs-3 permanent-marker-regular">
               <span className='text-light'>{username}</span>
             </span>
 
@@ -174,7 +206,7 @@ function notifyFailer(data){
 
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Enter User Identifier</label>
-                        <input type="text" name="user_indentifier" class="form-control fw-light" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: username,phone no,email id' />
+                        <input type="text" name="user_indentifier" class="form-control" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: username,phone no,email id' />
                     </div>
 
                     <div class="mb-3 col-12 row">
@@ -182,7 +214,7 @@ function notifyFailer(data){
 
                         <div className="col-lg-8 col-12 ps-2 pe-0 row"> 
                           <div className='col-9 pe-0'>
-                            <input type="text" name="pws" value={pws} onChange={(e)=>setPws(e.target.value)} class="form-control fs-6" id="exampleInputPassword1" style={{backgroundColor:"#a0ebc0"}} placeholder='*************'/>
+                            <input type="password" name="pws" value={pws} onChange={(e)=>setPws(e.target.value)} class="form-control fs-6" id="exampleInputPassword1" style={{backgroundColor:"#a0ebc0"}} placeholder='*************'/>
                           </div>
                           <div className='col-2 px-2 text-center pt-1 ms-2 border rounded btn text-white' id="copy" onClick={handleCopy} >
                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16">
@@ -198,7 +230,7 @@ function notifyFailer(data){
 
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Enter U.R.L. </label>
-                        <input type="text" name="url" class="form-control fs-7 fw-light" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: https://xyz.com/signin'/>
+                        <input type="text" name="url" class="form-control fs-7" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: https://xyz.com/signin'/>
                     </div>
 
                     <div class="d-grid gap-2">
@@ -216,6 +248,43 @@ function notifyFailer(data){
 
         <div>
 
+        </div>
+
+
+        <div>
+          <div>
+
+            <div className='my-4"'>
+              <h1 className='text-center roboto-regular'>User Information Table</h1>
+            </div>
+            <table class="table table-bordered table-hover">
+              <caption>User Account Database</caption>
+              <thead className='table-primary'>
+                <tr>
+                  <th scope="col">S. No.</th>
+                  <th scope="col">URL</th>
+                  <th scope="col">USERNAME</th>
+                  <th scope="col">PASSWORD</th>
+                </tr>
+              </thead>
+              <tbody>
+                  {
+                    data.map((obj,index)=>{
+                      return (
+                        <tr>
+                          <th scope={`${index}`}>{index+1}</th>
+                          <td><a href={obj.url}>{obj.url}</a></td>
+                          <td>{obj.user_indentifier}</td>
+                          <td>
+                            <span onClick={()=>viewPws(index)} className='text-primary btn m-0 p-0'>{tablepws==index?obj.pws:"view"}</span>
+                          </td>
+                        </tr>
+                      )
+                    })
+                  }
+              </tbody>
+            </table>
+          </div>
         </div>
 
             {/* developer */}
@@ -252,3 +321,13 @@ function notifyFailer(data){
 //store data(form data):-
 //  call api with data and token;
 //  and according to status memeber of json display msg;
+
+//updateData:-
+//  upadte userdata array;
+//  we call it at the time of render and handle submit;
+
+//viewPws:-
+//  here a tablePws state conatin showable pws index;
+//  and on click on view button we set index into tablePws variable;
+//  on while rendering when index==tablePws so we display pws else display view
+

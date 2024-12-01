@@ -34,7 +34,7 @@ async function randomPws(){
 }
 
 function storeData(data){
-    return axios.post("https://lockit-api.vercel.app/user/data/store",{data},{
+    return axios.post("http://localhost:2000/user/data/store",{data},{
         headers:{
             authorization:`Bearer ${sessionStorage.getItem("token")}`
         }
@@ -49,7 +49,24 @@ function storeData(data){
     })
 }
 
-export{authorization,randomPws,storeData};
+function getData(token,username){
+    return axios.get(`http://localhost:2000/user/data?username=${username}`,{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    }).
+    then((res)=>{
+        res=res.data;
+        console.log(`get /user/data?username=${username}`,res);
+        return res;
+    }).
+    catch((err)=>{
+        console.log("err :api/home/getData",err);
+        return({status:0,msg:"server error"});
+    })
+}
+
+export{authorization,randomPws,storeData,getData};
 
 
 // now i got json data {status,msg} format this two member is fixed!;

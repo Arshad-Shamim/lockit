@@ -75,7 +75,7 @@ async function storeData(data){
     let query = `create table if not exists ${table} (username varchar(50),url varchar(100) primary key,user_indentifier varchar(75),pws varchar(100))`
     let result = await db.query(query);
 
-    data.pws = await bcrypt.hash(data.pws,5);
+    data.pws = Buffer.from(data.pws).toString('base64');
     query = `delete from ${table} where url='${data.url}'`;
     result = await db.query(query);
     if(result.rowCount==1)
@@ -86,4 +86,19 @@ async function storeData(data){
     console.log("data stored",data);
 }
 
-export {checkStatus,storeUser,check,storeData}
+async function fetchUserdata(username){
+    try{
+        const db=dbConnect();
+        const table="lockit_usersdata";
+    
+        let query = `select * from ${table} where "username"='${username}'`;
+        const result = await db.query(query)
+        return result;
+    }
+    catch(err){
+        console.log("err model/user/fetchUseradata :",err);
+        throw err;
+    }
+}
+
+export {checkStatus,storeUser,check,storeData,fetchUserdata}
