@@ -9,12 +9,12 @@ import Error from "./Error.jsx";
 
 export default function Home() {
 
-  let [authorize,setAuthorize]=useState(true);  
-  let [pws,setPws] =useState("");
+  let [authorize,setAuthorize]=useState(true);   //ensure that user are suthorize or not;
+  let [pws,setPws] =useState("");               //store pws input field value
   let navigate = useNavigate();
-  let [username,setUsername]=useState(sessionStorage.getItem("username"));
-  let [data,setData]=useState([]);
-  let [tablepws,setTablepws]=useState(-1);
+  let [username,setUsername]=useState(sessionStorage.getItem("username"));  
+  let [data,setData]=useState([]);                 //store array of object (user data);
+  let [tablepws,setTablepws]=useState(-1);         //-1=no pws view event tablepws!=-1 display stored index pws;
 
   useEffect(()=>{
     console.log("useEffect() :")
@@ -122,10 +122,26 @@ function notifyFailer(data){
       element.style.backgroundColor="#198754";
     },800);
   }
-  
-  async function viewPws(index){
-    setTablepws(index);
+
+  function table_pws_fn(pws){
+    return(
+      <div className='row col-12'>
+        <div className=' border col-lg-6 col-12 bg-secondary ms-2'>
+          <span className='text-dark'>{pws}</span>
+        </div>
+
+        <div className='col-lg-2 col-5 ms-2 p-0'>
+          <span className='btn btn-sm m-0 p-0 text-primary text-decoration-underline' onClick={()=>setTablepws(-1)}>Hide</span>
+        </div>
+
+        <div className='col-lg-2 col-5 p-0 ms-0'>
+          <span className='btn btn-sm m-0 p-0 text-primary text-decoration-underline' onClick={async()=>{await navigator.clipboard.writeText(pws)}}>copy</span>
+        </div>
+      </div>
+    )
   }
+
+
 
   if(!authorize){
     return(<Error msg={"Please log in to continue...."}/>)
@@ -263,8 +279,9 @@ function notifyFailer(data){
                 <tr>
                   <th scope="col">S. No.</th>
                   <th scope="col">URL</th>
-                  <th scope="col">USERNAME</th>
+                  <th scope="col">USERNAME IDENTIFIER</th>
                   <th scope="col">PASSWORD</th>
+                  <th style={{width:"7%"}}></th>
                 </tr>
               </thead>
               <tbody>
@@ -273,10 +290,17 @@ function notifyFailer(data){
                       return (
                         <tr>
                           <th scope={`${index}`}>{index+1}</th>
-                          <td><a href={obj.url}>{obj.url}</a></td>
+                          <td><a href={obj.url}  className='text-dark'>{obj.url}</a></td>
                           <td>{obj.user_indentifier}</td>
                           <td>
-                            <span onClick={()=>viewPws(index)} className='text-primary btn m-0 p-0'>{tablepws==index?obj.pws:"view"}</span>
+                            {tablepws==index?table_pws_fn(obj.pws):<span onClick={()=>setTablepws(index)} className='text-primary btn m-0 p-0 text-start ms-2'>view</span>}
+                          </td>
+                          <td className='ms-2 btn m-0 p-0'>
+                            <div>
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                              </svg>
+                            </div>
                           </td>
                         </tr>
                       )
@@ -326,8 +350,12 @@ function notifyFailer(data){
 //  upadte userdata array;
 //  we call it at the time of render and handle submit;
 
-//viewPws:-
-//  here a tablePws state conatin showable pws index;
+//onClick of view Button:-
+//  here a tablePws state conatain showable pws index;
 //  and on click on view button we set index into tablePws variable;
 //  on while rendering when index==tablePws so we display pws else display view
 
+//table_pws_fn:-
+//  when tablepws if -1 i.e. no pws view event then diaply view button
+//  else then call this function whith pws and this return a pws anda hide button
+//  on click hide button again table pws set -1;
