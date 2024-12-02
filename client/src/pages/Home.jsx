@@ -281,7 +281,7 @@ function notifyFailer(data){
                   <th scope="col">URL</th>
                   <th scope="col">USERNAME IDENTIFIER</th>
                   <th scope="col">PASSWORD</th>
-                  <th style={{width:"30vw"}}>DELETE</th>
+                  <th>ACTION</th>
                 </tr>
               </thead>
               <tbody>
