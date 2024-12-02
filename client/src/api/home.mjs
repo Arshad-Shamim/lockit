@@ -50,7 +50,7 @@ function storeData(data){
 }
 
 function getData(token,username){
-    return axios.get(`http://localhost:2000/user/data?username=${username}`,{
+    return axios.get(`https://lockit-api.vercel.app/user/data?username=${username}`,{
         headers:{
             Authorization:`Bearer ${token}`
         }
