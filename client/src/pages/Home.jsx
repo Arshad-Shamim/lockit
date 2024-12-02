@@ -273,7 +273,7 @@ function notifyFailer(data){
             <div className='my-4"'>
               <h1 className='text-center roboto-regular'>User Information Table</h1>
             </div>
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover table-responsive">
               <caption>User Account Database</caption>
               <thead className='table-primary'>
                 <tr>
@@ -281,7 +281,7 @@ function notifyFailer(data){
                   <th scope="col">URL</th>
                   <th scope="col">USERNAME IDENTIFIER</th>
                   <th scope="col">PASSWORD</th>
-                  <th style={{width:"7%"}}></th>
+                  <th style={{width:"30vw"}}>DELETE</th>
                 </tr>
               </thead>
               <tbody>
