@@ -101,4 +101,19 @@ async function fetchUserdata(username){
     }
 }
 
-export {checkStatus,storeUser,check,storeData,fetchUserdata}
+async function deleteLockit_usersdata(username,url){
+    try{
+        const db=dbConnect();
+        const table="lockit_usersdata";
+        let query=`delete from ${table} where "username"='${username}' and "url"='${url}'`
+        console.log(query);
+        const result = await db.query(query);
+        return result.rowCount;
+    }
+    catch(err){
+        console.log("err model/user/deleteLockit_usersdata :",err);
+        return 0;
+    }
+}
+
+export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata}

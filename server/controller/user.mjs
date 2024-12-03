@@ -1,4 +1,4 @@
-import { checkStatus,storeUser,check,storeData as store,fetchUserdata} from "../model/user.mjs";
+import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata} from "../model/user.mjs";
 import { deleteToken } from "../model/email.mjs";
 
 import jwt from 'jsonwebtoken' ;       //for generating token
@@ -157,7 +157,34 @@ async function getData(req,res){
     res.json(json);
 }
 
-export {signup,signin,validateToken,generatePws,storeData,getData};
+async function deleteData(req,res){
+    console.log("deleteData :");
+    const json = {"authorize":1};
+    try{
+        const username = req.query.username;
+        const url = req.query.url;
+    
+        const result = await deleteLockit_usersdata(username,url);
+        if(result){
+            json.status=1;
+            json.msg="Delete Successfully!";
+        }
+        else{
+            json.status=0;
+            json.msg="Data not match";
+        }
+    }
+    catch(err){
+        json.status=0;
+        json.msg="Server Error!";
+    }
+
+    console.log("deleteData res :",json);
+    res.json(json);
+
+}
+
+export {signup,signin,validateToken,generatePws,storeData,getData,deleteData};
 
 
 //signup:-
@@ -183,3 +210,9 @@ export {signup,signin,validateToken,generatePws,storeData,getData};
 //  get data from client and store them;
 //  here we encode data by Buffer.from(data).toString('base64');
 //  and prepare json;
+
+//deleteData:-
+//  get  username and url as query string;
+//  delete data from lockit_userdata table;
+//  if deleted so send a success json;
+//  else send failyear message;

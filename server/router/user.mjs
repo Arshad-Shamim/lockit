@@ -1,7 +1,7 @@
 import {Router} from 'express';  
 import {expressjwt} from 'express-jwt';       //for valid token;
 
-import {signup,signin,validateToken,generatePws,storeData,getData} from '../controller/user.mjs';
+import {signup,signin,validateToken,generatePws,storeData,getData,deleteData} from '../controller/user.mjs';
 
 const router = Router();
 
@@ -11,5 +11,6 @@ router.get("/",expressjwt({algorithms:['HS256'],secret:"hello user"}),validateTo
 router.get("/randompws",generatePws);
 router.post("/data/store",expressjwt({algorithms:['HS256'],secret:"hello user"}),storeData);
 router.get("/data",expressjwt({algorithms:['HS256'],secret:"hello user"}),getData);
+router.delete("/data/delete",expressjwt({algorithms:['HS256'],secret:"hello user"}),deleteData);
 
 export {router};
