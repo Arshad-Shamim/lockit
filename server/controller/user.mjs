@@ -1,4 +1,4 @@
-import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata} from "../model/user.mjs";
+import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata,sorted_userdata} from "../model/user.mjs";
 import { deleteToken } from "../model/email.mjs";
 
 import jwt from 'jsonwebtoken' ;       //for generating token
@@ -184,7 +184,37 @@ async function deleteData(req,res){
 
 }
 
-export {signup,signin,validateToken,generatePws,storeData,getData,deleteData};
+async function sortData(req,res){
+    console.log("controller/users.mjs/sortData :");
+    const json={"authorize":1};
+    try{
+        const username=req.query.username;
+        const sortBy=req.query.sortBy;
+        let result="";
+        if(sortBy=="recently add")
+            result = await fetchUserdata(username);
+        else
+        result = await sorted_userdata(username,sortBy);
+
+        result.rows=result.rows.map((obj)=>{
+            obj.pws=Buffer.from(obj.pws,'base64').toString('utf8');
+            return obj;
+        })
+
+        json.status=1;
+        json.msg=`Data sorted by ${sortBy}`;
+        json.data=result.rows;
+    }
+    catch(err){
+        console.log("controller/user.mjs/sortData :",err);
+        json.status=0;
+        json.msg-="server error!";
+    }
+    console.log("res sortData success");
+    res.send(json);
+}
+
+export {signup,signin,validateToken,generatePws,storeData,getData,deleteData,sortData};
 
 
 //signup:-
@@ -216,3 +246,9 @@ export {signup,signin,validateToken,generatePws,storeData,getData,deleteData};
 //  delete data from lockit_userdata table;
 //  if deleted so send a success json;
 //  else send failyear message;
+
+//sortData:-
+//  getusername and sortBY column name from client;
+//  if column name is recet add then call getDatafn 
+//  else callsorted data fn which return a sorted data with respect to specified column name;
+//  and according to response return a json;

@@ -86,7 +86,28 @@ async function deleteData(url){
     })
 }
 
-export{authorization,randomPws,storeData,getData,deleteData};
+async function sortData(sortBy){
+    const token=sessionStorage.getItem("token");
+    const username = sessionStorage.getItem("username");
+
+
+    return axios.get(`https://lockit-api.vercel.app/user/data/sort?username=${username}&sortBy=${sortBy}`,{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    }).
+    then((res)=>{
+        res=res.data;
+        console.log(`get /users/data/sort?username=${username}&sortBy=${sortBy}`,res);
+        return res;
+    }).
+    catch((err)=>{
+        console.log(`err /users/data/sort?username=${username}&sortBy=${sortBy} :`,err);
+        return {"status":0,"mag":"something went wrong!"};
+    })  
+}
+
+export{authorization,randomPws,storeData,getData,deleteData,sortData};
 
 
 // now i got json data {status,msg} format this two member is fixed!;

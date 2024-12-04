@@ -42,3 +42,8 @@ app.listen(2000,(err)=>{
         console.log("Srever Started on port number 2000 ");
 });
 
+//   "/authorize" for auhorize the page;
+//   "/user" for handle user query
+//    "/email" for handle email quey;
+//     "/randompws" from generate random passsword;
+

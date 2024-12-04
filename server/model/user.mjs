@@ -116,4 +116,17 @@ async function deleteLockit_usersdata(username,url){
     }
 }
 
-export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata}
+async function sorted_userdata(username,sortBy){
+    try{
+        const db=dbConnect();
+        const table="lockit_usersdata";
+        let query=`select * from ${table} where "username"='${username}' order by "${sortBy}"`;
+        const result = await db.query(query);
+        return result;
+    }
+    catch(err){
+        console.log("model/sorted_usersdata err :",err);
+    }
+}
+
+export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata,sorted_userdata}

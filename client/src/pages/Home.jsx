@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom';
 import { useState,useEffect} from 'react';
 import { ToastContainer,toast } from 'react-toastify';    //notification
 
-import {authorization,randomPws as generatePws,storeData,getData,deleteData} from '../api/home.mjs';   //for authorize user;
+import {authorization,randomPws as generatePws,storeData,getData,deleteData,sortData} from '../api/home.mjs';   //for authorize user;
 import Error from "./Error.jsx";
 
 
@@ -135,7 +135,7 @@ function notifyFailer(data){
         </div>
 
         <div className='col-lg-2 col-5 p-0 ms-0'>
-          <span className='btn btn-sm m-0 p-0 text-primary text-decoration-underline' onClick={async()=>{await navigator.clipboard.writeText(pws)}}>copy</span>
+          <span className='btn btn-sm m-0 p-0 text-primary text-decoration-underline' onClick={async()=>{await navigator.clipboard.writeText(pws);notifySuccess("copied!")}}>copy</span>
         </div>
       </div>
     )
@@ -146,8 +146,8 @@ function notifyFailer(data){
     deleteData(url).
     then((res)=>{
       if(res.status){
-        notifySuccess(res.msg);
         updateData()
+        notifySuccess(res.msg);
       }
       else{
         notifyFailer(res.msg);
@@ -157,6 +157,24 @@ function notifyFailer(data){
       console.log("pages/home/dataTablerow :",err);
       notifyFailer("something went wrong!");
     })
+  }
+
+  function handleSort(e){
+    const sortBy= e.target.value==0?"recently add":e.target.value==1?"url":"user_indentifier";
+    console.log("handle sort: sortBy",sortBy);
+    sortData(sortBy).
+    then((res)=>{
+      if(res.status){
+        setData(res.data)
+        notifySuccess(res.msg);
+      }
+      else{
+        notifyFailer(res.msg);
+      }
+    }).
+    catch((err)=>{
+      notifyFailer("Something went wrong");
+    });
   }
 
 
@@ -291,7 +309,19 @@ function notifyFailer(data){
             <div className='my-4"'>
               <h1 className='text-center roboto-regular'>User Information Table</h1>
             </div>
-            <table class="table table-bordered table-hover table-responsive">
+
+            <div className='my-1'>
+              <span className='ms-2'>sort by :</span>
+              <div className='ms-1 d-inline'>
+                <select class="form-select form-select-sm d-inline" aria-label=".form-select-sm example" name="sort" style={{width:"10vw"}} onChange={(e)=>handleSort(e)}>
+                  <option value="0">Recently</option>
+                  <option value="1">URL</option>
+                  <option value="2">User Indentifier</option>
+                </select>
+              </div>
+            </div>
+
+            <table class="table table-bordered table-hover table-responsive ">
               <caption>User Account Database</caption>
               <thead className='table-primary'>
                 <tr>
@@ -382,3 +412,9 @@ function notifyFailer(data){
 //   call api /user/data/delete?username=''&url='';
 //   if data delete successfull display msg and update data;
 //   else notify all kind of failyear msg;
+
+//handleSort:-
+// onchange in select input field we call this
+//  after get sort by column name by  selected value;
+//  call api with username and sort by column namae;
+//  add server data in desired sorted manner;
