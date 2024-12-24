@@ -53,7 +53,7 @@ function storeData(data){
 }
 
 function getData(token,username){
-    return axios.get(`https://lockit-api.vercel.app/user/data?username=${username}`,{
+    return axios.get(`https://lockit-api.vercel.app/user/get/data?username=${username}`,{
         headers:{
             Authorization:`Bearer ${token}`
         }
@@ -73,7 +73,7 @@ async function deleteData(url){
     const token = sessionStorage.getItem("token");
     const username = sessionStorage.getItem("username");
 
-    return axios.delete(`https://lockit-api.vercel.app/user/data/delete?username=${username}&url=${url}`,{
+    return axios.delete(`https://lockit-api.vercel.app/user/delete/data?username=${username}&url=${url}`,{
         headers:{
             Authorization:`Bearer ${token}`
         }
@@ -94,7 +94,7 @@ async function sortData(sortBy){
     const username = sessionStorage.getItem("username");
 
 
-    return axios.get(`https://lockit-api.vercel.app/user/data/sort?username=${username}&sortBy=${sortBy}`,{
+    return axios.get(`https://lockit-api.vercel.app/user/sort/data?username=${username}&sortBy=${sortBy}`,{
         headers:{
             Authorization:`Bearer ${token}`
         }

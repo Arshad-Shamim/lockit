@@ -88,13 +88,13 @@ async function signin_authenticate(req,res){
 }
 
 
-async function validateToken(req,res){
+async function isvalidateToken(req,res){
     res.json({"authorize":true,"status":1,"msg":"Authorized"});
 }
 
-async function generatePws(req,res){
+async function randompws(req,res){
     const json={};
-    console.log("controller/user.mjs/generatePws()");
+    console.log("controller/user.mjs/randompws()");
     try{
         let length =12;
         let chars ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?';
@@ -117,7 +117,7 @@ async function generatePws(req,res){
         json.status=0;
     }
 
-    console.log(`controller/generatepws :`,json)
+    console.log(`controller/randompws:`,json)
     res.json(json)
 }
 
@@ -221,7 +221,7 @@ async function sortData(req,res){
     res.send(json);
 }
 
-export {signup_store,signin_authenticate,validateToken,generatePws,storeData,getData,deleteData,sortData};
+export {signup_store,signin_authenticate,isvalidateToken,randompws,storeData,getData,deleteData,sortData};
 
 
 //signup_store:-
@@ -240,7 +240,7 @@ export {signup_store,signin_authenticate,validateToken,generatePws,storeData,get
 //  else send false;
 
 
-//generatepws:-
+//randompws:-
 //  genearte a random pws of 12 length;
 
 //store data:-

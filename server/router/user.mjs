@@ -1,18 +1,18 @@
 import {Router} from 'express';  
 import {expressjwt} from 'express-jwt';       //for valid token;
 
-import {signup_store,signin_authenticate,validateToken,generatePws,storeData,getData,deleteData,sortData} from '../controller/user.mjs';
+import {signup_store,signin_authenticate,isvalidateToken,randompws,storeData,getData,deleteData,sortData} from '../controller/user.mjs';
 
 const router = Router();
 
 router.post("/signup/store",signup_store);
 router.get("/signin/authenticate",signin_authenticate);
-router.get("/",expressjwt({algorithms:['HS256'],secret:"hello user"}),validateToken);
-router.get("/randompws",generatePws);
-router.post("/data/store",expressjwt({algorithms:['HS256'],secret:"hello user"}),storeData);
-router.get("/data",expressjwt({algorithms:['HS256'],secret:"hello user"}),getData);
-router.delete("/data/delete",expressjwt({algorithms:['HS256'],secret:"hello user"}),deleteData);
-router.get("/data/sort",expressjwt({algorithms:['HS256'],secret:"hello user"}),sortData);
+router.get("/",expressjwt({algorithms:['HS256'],secret:"hello user"}),isvalidateToken);
+router.get("/randompws",randompws);
+router.post("/store/data",expressjwt({algorithms:['HS256'],secret:"hello user"}),storeData);
+router.get("/get/data",expressjwt({algorithms:['HS256'],secret:"hello user"}),getData);
+router.delete("/delete/data",expressjwt({algorithms:['HS256'],secret:"hello user"}),deleteData);
+router.get("/sort/data",expressjwt({algorithms:['HS256'],secret:"hello user"}),sortData);
 
 export {router};
 
