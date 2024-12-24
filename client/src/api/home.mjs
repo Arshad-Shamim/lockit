@@ -36,7 +36,7 @@ async function randomPws(){
 }
 
 function storeData(data){
-    return axios.post("https://lockit-api.vercel.app/user/data/store",{data},{
+    return axios.post("https://lockit-api.vercel.app/user/store/data",{data},{
         headers:{
             authorization:`Bearer ${sessionStorage.getItem("token")}`
         }
