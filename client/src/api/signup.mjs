@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 async function varifyEmail(email){                                //send mail and store email and status="false"in table
-    return axios.post("https://lockit-api.vercel.app/email/verify",{email}).
+    return axios.post("https://lockit-api.vercel.app/email/verifylink",{email}).
     then((res)=>{
         res=res.data;
         console.log("get /email/verify:",res);

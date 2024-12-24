@@ -4,7 +4,7 @@ import { sendEmail,verifyEmail } from '../controller/email.mjs';
 
 const router =Router();
 
-router.post("/verify",sendEmail);
+router.post("/verifylink",sendEmail);
 router.get("/verified",verifyEmail);
 
 export {router};
