@@ -67,19 +67,22 @@ function notifyFailer(data){
   callAuthorization();   //authorize user;
 
   function handleSigout(){
+    console.log("handleSignout :");
     sessionStorage.clear();
     navigate("/signin");
     return;
   }
 
   async function randomPws(){             //cal api from random generated pws;
-    let temppws = await generatePws();
+    console.log("randomPws() :");
+    let res= await generatePws();
 
-    if(temppws){
-      setPws(temppws);
+    if(res.status){
+      setPws(res.pws);
+      notifySuccess(res.msg)
     }
     else
-      notifyFailer("Server Error!");
+      notifyFailer(res.msg);
   }
 
   async function handleSubmit(e){

@@ -25,11 +25,13 @@ async function authorization(){
 async function randomPws(){
     return axios.get("https://lockit-api.vercel.app/randompws").
     then((res)=>{
-        return res.data.pws;
+        res=res.data;
+        console.log(`get /randompws:`,res);
+        return res;
     }).
     catch((err)=>{
-        console.log(err);
-        return false;
+        console.log("err : api/home/randomPws",err);
+        return {status:0,msg:"Something went wrong!"};
     })
 }
 
@@ -41,11 +43,12 @@ function storeData(data){
     }).
     then((res)=>{
         res=res.data;
+        console.log("get api/home.mjs/storeData :",res);
         return res;
     }).
     catch((err)=>{
         console.log(err);
-        return res;
+        return {"status":0,"msg":"something went wrong"};
     })
 }
 

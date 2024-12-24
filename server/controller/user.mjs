@@ -89,10 +89,12 @@ async function signin(req,res){
 
 
 async function validateToken(req,res){
-    res.json({"authorize":true});
+    res.json({"authorize":true,"status":1,"msg":"Authorized"});
 }
 
 async function generatePws(req,res){
+    const json={};
+    console.log("controller/user.mjs/generatePws()");
     try{
         let length =12;
         let chars ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}<>?';
@@ -105,13 +107,18 @@ async function generatePws(req,res){
         }
     
         console.log("password generated :",pws);
-        let json={"pws":pws};
-        res.json(json);
+        json.msg="password generated";
+        json.status=1;
+        json.pws=pws;
     }
     catch(err){
         console.log("Server error server/constroller/user.mjs",err);
-        res.send(err);
+        json.msg="Server Error!";
+        json.status=0;
     }
+
+    console.log(`controller/generatepws :`,json)
+    res.json(json)
 }
 
 async function storeData(req,res){
@@ -123,14 +130,14 @@ async function storeData(req,res){
         const result = await store(data);
         json.msg="data stored Successfully";
         json.status=1;
-        res.json(json);
     }
     catch(err){
         console.log("err :server/contrller/user.mjs :",err);
         json.msg="Server Error";
         json.status=0;
-        res.json(json);
     }
+    console.log("res controller/user.mjs/storeData :",json);
+    res.json(json);
 }
 
 async function getData(req,res){
@@ -153,7 +160,7 @@ async function getData(req,res){
         json.msg="Server Error";
     }
 
-    console.log("response :pass",);
+    console.log("response controller/user/getData :",json);
     res.json(json);
 }
 
@@ -179,7 +186,7 @@ async function deleteData(req,res){
         json.msg="Server Error!";
     }
 
-    console.log("deleteData res :",json);
+    console.log("user.mjs/deleteData res :",json);
     res.json(json);
 
 }
@@ -194,7 +201,7 @@ async function sortData(req,res){
         if(sortBy=="recently add")
             result = await fetchUserdata(username);
         else
-        result = await sorted_userdata(username,sortBy);
+            result = await sorted_userdata(username,sortBy);
 
         result.rows=result.rows.map((obj)=>{
             obj.pws=Buffer.from(obj.pws,'base64').toString('utf8');
