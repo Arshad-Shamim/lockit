@@ -1,10 +1,10 @@
 import {Router} from 'express'
 
-import { sendEmail,verifyEmail } from '../controller/email.mjs';
+import { send_verifylink,verify_verifylink } from '../controller/email.mjs';
 
 const router =Router();
 
-router.post("/verifylink",sendEmail);
-router.get("/verified",verifyEmail);
+router.post("/send/verifylink",send_verifylink);
+router.get("verify/verifylink",verify_verifylink);
 
 export {router};

@@ -6,7 +6,8 @@ import express from 'express';
 
 const app = express();
 
-async function sendEmail(req,res){
+async function send_verifylink(req,res){
+    console.log("email/send_verifylink()");
     const json={};
     try{
         const [emailBody,token]=emailFromat(req.body.email);
@@ -29,7 +30,7 @@ async function sendEmail(req,res){
     res.json(json);
 }
 
-function verifyEmail(req,res){     //this route verify user;
+function verify_verifylink(req,res){     //this route verify user;
     const token = req.query.token;
     
     jwt.verify(token,"verification_link",async (err,email)=>{
@@ -49,17 +50,17 @@ function verifyEmail(req,res){     //this route verify user;
 
 }
 
-export{sendEmail,verifyEmail};
+export{verify_verifylink,send_verifylink};
 
 
 
-//sending mail:-
+//send_verifylink:-
 //  got email from client
 //  and got email body and token form emailhelper.mjs file
 //  then send mail
 
 
-//verifyEmail:-
+//verify_veifylink:-
 //  decode token;
 // update status of decoded email;
 //  render success or failer page according to msg;
