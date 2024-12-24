@@ -4,8 +4,8 @@ import { deleteToken } from "../model/email.mjs";
 import jwt from 'jsonwebtoken' ;       //for generating token
 import crypto from 'crypto';               //for generate pws;
 
-async function signup(req,res){
-    console.log("controller/user.mjs/signup");
+async function signup_store(req,res){
+    console.log("controller/user.mjs/signup_store");
     const json={};
 
     try{
@@ -42,7 +42,7 @@ async function signup(req,res){
 
     }
     catch(err){
-        console.log("controller/user/signup :",err);
+        console.log("controller/user/signup_store :",err);
         json.msg="Server error!";
         json.status=0;
     }
@@ -51,8 +51,8 @@ async function signup(req,res){
 }
 
 
-async function signin(req,res){
-    console.log("users/signin.mjs");
+async function signin_authenticate(req,res){
+    console.log("users/signin_authenticate.mjs");
     const json = {};
     try{
         const data = {
@@ -78,7 +78,7 @@ async function signin(req,res){
         }
     }
     catch(err){
-        console.log("err (controller/user.mjs/signin):",err);
+        console.log("err (controller/user.mjs/signin_authenticate):",err);
         json["msg"]="Server Error";
         json.status=0;
     }
@@ -221,16 +221,16 @@ async function sortData(req,res){
     res.send(json);
 }
 
-export {signup,signin,validateToken,generatePws,storeData,getData,deleteData,sortData};
+export {signup_store,signin_authenticate,validateToken,generatePws,storeData,getData,deleteData,sortData};
 
 
-//signup:-
+//signup_store:-
 //  got form data from client
 //  check email is verified or not (by check status of given email) 
 //  if email is verified then store data and delete token from table (now email verification link is expired );
 
 
-//signin:-
+//signin_authenticate:-
 //  got data from cient
 //  match data with database if matched res="success" else res="failer"
 //      fetch pws from database then decode it and then match with user pws;
