@@ -56,8 +56,8 @@ async function signin(req,res){
     const json = {};
     try{
         const data = {
-            "username":req.headers["username"],
-            "pws":req.headers["pws"]
+            "username":req.query.username,
+            "pws":req.query.pws
         };
         
         const result = await check(data);
