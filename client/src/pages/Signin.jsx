@@ -115,7 +115,7 @@ export default function Signin() {
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" type="submit">Sign in</button>
+                                <button class="btn btn-primary" type="submit" style={{backgroundColor:"#683ec5"}}>Sign in</button>
                             </div>
                         </form>
 
