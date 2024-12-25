@@ -323,8 +323,8 @@ function notifyFailer(data){
                 </select>
               </div>
             </div>
-            <div className='container' style={{"overflowY":"scroll"}}>
-              <table class="table table-bordered table-hover">
+            <div className='container-fluid' style={{"overflowY":"scroll"}}>
+              <table class="table table-bordered table-hover table-responsive">
                 <caption>User Account Database</caption>
                 <thead className='table-primary'>
                   <tr>
