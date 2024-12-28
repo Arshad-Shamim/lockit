@@ -9,7 +9,7 @@ import Error from "./Error.jsx";
 
 export default function Home() {
 
-  let [authorize,setAuthorize]=useState(true);   //ensure that user are suthorize or not;
+  let [authorize,setAuthorize]=useState(true);   //ensure that user are authorize or not;
   let [pws,setPws] =useState("");               //store pws input field value
   let navigate = useNavigate();
   let [username,setUsername]=useState(sessionStorage.getItem("username"));  
@@ -183,7 +183,7 @@ function notifyFailer(data){
 
 
   if(!authorize){
-    return(<Error msg={"Please log in to continue...."}/>)
+    return(<Error msg={"Please log in or sign up to continue...."}/>)
   }
   else{
     return (
@@ -216,7 +216,7 @@ function notifyFailer(data){
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="#features">
+                  <a className="nav-link active" aria-current="page" href="/home/features">
                     Features
                   </a>
                 </li>
@@ -362,6 +362,11 @@ function notifyFailer(data){
             </div>
           </div>
         </div>
+
+
+        <div class="spinner-border" role="status">
+  <span class="visually-hidden">Loading...</span>
+</div>
 
             {/* developer */}
         <div className="fixed-bottom text-center roboto-bold text-white" style={{backgroundColor:"#198754"}}>

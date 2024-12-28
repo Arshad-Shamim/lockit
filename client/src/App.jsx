@@ -8,6 +8,7 @@ import Signin from './pages/Signin.jsx';
 import Signup from './pages/Signup.jsx';
 import Home from './pages/Home.jsx';
 import Error  from './pages/Error.jsx';
+import Features from './pages/Features.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -19,6 +20,7 @@ function App() {
         <Route path="/signin" element={<Signin/>}/>
         <Route path="/signup" element={<Signup/>}/>
         <Route path="/home" element={<Home/>}/>
+        <Route path="/home/features" element={<Features/>}/>
         <Route path="/*" element={<Error msg={"Page not founded!"}/>}/>
       </Routes>
     </>
