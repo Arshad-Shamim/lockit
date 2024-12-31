@@ -21,6 +21,18 @@ export default function Home() {
     updateData();
   },[])
 
+  function start_loading(border,content){
+    document.getElementById(border).classList.add('spinner-border');
+    document.getElementById(content).classList.add('visually-hidden');
+  }
+
+  function finish_loading(border,content){
+    document.getElementById(border).classList.remove('spinner-border');
+    document.getElementById(content).classList.remove('visually-hidden');
+  }
+
+
+
   function updateData(){
     console.log("updateData :");
     const token=sessionStorage.getItem("token");
@@ -73,9 +85,12 @@ function notifyFailer(data){
     return;
   }
 
-  async function randomPws(){             //cal api from random generated pws;
+  async function randomPws(loading,content){             //cal api from random generated pws;
     console.log("randomPws() :");
+
+    start_loading(loading,content);
     let res= await generatePws();
+    finish_loading(loading,content)
 
     if(res.status){
       setPws(res.pws);
@@ -261,7 +276,7 @@ function notifyFailer(data){
 
                     <div class="mb-3">
                         <label for="exampleInputEmail1" class="form-label">Enter User Identifier</label>
-                        <input type="text" name="user_indentifier" class="form-control" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: username,phone no,email id' />
+                        <input type="text" name="user_indentifier" class="form-control" id="exampleInputEmail1"  style={{backgroundColor:"#a0ebc0"}} placeholder='eg: username,phone no,email id' autocomplete="off" />
                     </div>
 
                     <div class="mb-3 col-12 row">
@@ -279,7 +294,10 @@ function notifyFailer(data){
                         </div>
 
                         <div className="col-lg-4 col-12 mt-1 mt-lg-0  ps-2 ms-auto">
-                            <button class="btn btn-warning" type="button" onClick={randomPws}>Generate Password</button>
+                            <button class="btn btn-warning col-12" type="button" onClick={()=>randomPws("generate_pws_loading","generate_pws_content")}>
+                              <div id="generate_pws_loading"></div>
+                              <span id="generate_pws_content">Generate Password</span>
+                            </button>
                         </div>
                     </div>
 
