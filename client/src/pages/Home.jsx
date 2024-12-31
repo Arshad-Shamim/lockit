@@ -4,7 +4,7 @@ import { useState,useEffect} from 'react';
 import { ToastContainer,toast } from 'react-toastify';    //notification
 
 import {authorization,randomPws as generatePws,storeData,getData,deleteData,sortData} from '../api/home.mjs';   //for authorize user;
-import Error from "./Error.jsx"
+import Error from "./Error.jsx";
 
 
 export default function Home() {
