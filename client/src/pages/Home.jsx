@@ -242,18 +242,18 @@ function notifyFailer(data){
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 <li className="nav-item">
-                  <a className="nav-link active" aria-current="page" href="/home/features">
+                  <a className="nav-link text-white" aria-current="page" href="/home/features">
                     Features
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#about">
-                    Developer
+                  <a className="nav-link text-white" href="/home/contact">
+                    Contact
                   </a>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#contact">
-                    Contact
+                  <a className="nav-link text-white" href="#about">
+                    Developer
                   </a>
                 </li>
                 <li className='nav-item'>
