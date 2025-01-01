@@ -12,13 +12,25 @@ export default function Signin() {
     let [username,setUsername]= useState("");
     let navigate = useNavigate();
 
-    async function handleSubmit(e){
+    function start_loading(border,content){
+        console.log(document.getElementById(content));
+        document.getElementById(border).classList.add("spinner-border");
+        document.getElementById(content).classList.add("visually-hidden");
+    }
+
+    function finish_loading(border,content){
+        document.getElementById(border).classList.remove("spinner-border");
+        document.getElementById(content).classList.remove("visually-hidden");
+    }
+
+    async function handleSubmit(e,border,content){
         console.log("/signin/handleSubmit");
         const data = { 
             "username":e.target.username.value,
             "pws":e.target.pws.value
         }
 
+        start_loading(border,content);
         authenticate(data).
         then((res)=>{
             if(res.status){
@@ -35,6 +47,9 @@ export default function Signin() {
         catch((err)=>{
             console.log("err page/signin/handleSubmit :Some wrong on client")
             notifyFailer("something went wrong!");
+        }).
+        finally(()=>{
+            finish_loading(border,content);
         })
 
         e.preventDefault();
@@ -82,7 +97,7 @@ export default function Signin() {
                     </div>
 
                     <div className='mt-4'>
-                        <form className='col-lg-8 mt-4' onSubmit={handleSubmit} method='POST'>
+                    <form className='col-lg-8 mt-4' onSubmit={(e)=>handleSubmit(e,"signin_loading","signin_content")} method='POST'>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
                                 <input type="text" name="username" onChange={(e)=>setUsername(e.target.value)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
@@ -115,7 +130,10 @@ export default function Signin() {
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
-                                <button class="btn btn-primary" type="submit" style={{backgroundColor:"#683ec5"}}>Sign in</button>
+                                <button class="btn btn-primary" type="submit" style={{backgroundColor:"#683ec5"}}>
+                                    <div  id="signin_loading" className=''></div>
+                                    <span  id="signin_content" className=''>Sign in</span>
+                                </button>
                             </div>
                         </form>
 
@@ -136,3 +154,17 @@ export default function Signin() {
 //  here client sent username or password to api;
 //  if crediancial is correct then redirect to home page and create a session and store token and username there;
 //  else show sign in failer message
+
+//start_finish():-
+//  eg <div>           #div1
+//      <div> </div>    #div2
+//    </div>
+//  take id of both div and add spinner-border class and visually-hidden class into div1 and div2 respectively
+// call by component handler function;
+
+//finish_loading():-
+//  eg <div>           #div1
+//      <div> </div>    #div2
+//    </div>
+//  take id of both div and remove spinner-border class and visually-hidden class from div1 and div2 respectively
+// call by component handler function;

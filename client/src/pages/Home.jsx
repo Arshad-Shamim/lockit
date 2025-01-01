@@ -119,7 +119,6 @@ function notifyFailer(data){
         notifySuccess(res.msg);
         updateData();
         setPws("");
-        finish_loading(border,content);
         e.target.reset();
       }
       else
@@ -127,7 +126,10 @@ function notifyFailer(data){
     }).
     catch((err)=>{
       notifyFailer("Some Went Wrong !");
-    });
+    }).
+    finally(()=>{
+      finish_loading(border,content);
+    })
 
     e.preventDefault();
   }
@@ -172,7 +174,6 @@ function notifyFailer(data){
       if(res.status){
         updateData()
         notifySuccess(res.msg);
-        finish_loading(border,content);
       }
       else{
         notifyFailer(res.msg);
@@ -181,6 +182,9 @@ function notifyFailer(data){
     catch((err)=>{
       console.log("pages/home/dataTablerow :",err);
       notifyFailer("something went wrong!");
+    }).
+    finally(()=>{
+      finish_loading(border,content);
     })
   }
 
@@ -455,3 +459,20 @@ function notifyFailer(data){
 //  after get sort by column name by  selected value;
 //  call api with username and sort by column namae;
 //  add server data in desired sorted manner;
+
+//start_loading():-
+//  eg <div>           #div1
+//      <div> </div>    #div2
+//    </div>
+//   take id of both div and add spinner-border class and visually-hidden class in div1 and div respectively
+// call by component handler function;
+
+
+
+// finish_loading():-
+//  eg <div>           #div1
+//      <div> </div>    #div2
+//    </div>
+//  take id of both div and remove spinner-border class and visually-hidden class in div1 and div2 respectively;
+// call by component handler function;
+

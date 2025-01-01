@@ -11,10 +11,21 @@ import SignupImg from '../assets/signup.jpg';
 export default function Signup() {
 
   let [form,setForm] = useState({"username":"","email":"","pws":""});
-
+  let [emailmsg,setEmailmsg] = useState(0)
   let [passwordf,setPasswordf] = useState(false);
 
   let navigate = useNavigate();
+
+  function start_loading(border,content){
+    document.getElementById(border).classList.add("spinner-border");
+    document.getElementById(content).classList.add("visually-hidden");
+    console.log(document.getElementById(content));
+  }
+
+  function finish_loading(border,content){
+      document.getElementById(border).classList.remove("spinner-border");
+      document.getElementById(content).classList.remove("visually-hidden");
+  }
 
   function handleEmail(e){          // handle varify button of email; there if input="as" then email="a" and temp="as" email update after function end and mount the page;
       console.log("signup/handleemail");
@@ -40,7 +51,9 @@ export default function Signup() {
       }
   }
 
-  function handlevarify(){
+  function handlevarify(border,content){
+
+    start_loading(border,content)
     varifyEmail(form.email).
     then((res)=>{
       if(res.status){
@@ -49,10 +62,14 @@ export default function Signup() {
       else{
         notifyfailer(res.msg);
       }
+      setEmailmsg(1);
     })
     .catch((err)=>{
       notifyfailer("some thing went wrong!");
       console.log(err);
+    }).
+    finally(()=>{
+      finish_loading(border,content);
     })
   }
 
@@ -76,12 +93,12 @@ export default function Signup() {
     })
   }
 
-  async function handleSubmit(e){                     
+  async function handleSubmit(e,border,content){                     
     let pws = e.target.password.value;
     let cpws = e.target.cpassword.value;
 
     if(pws!=cpws){
-      notifyfailer("password and confirm must be same")
+      notifyfailer("password and confirm password must be same")
     }
     else{
         const temp={
@@ -91,7 +108,8 @@ export default function Signup() {
         }        
         setForm(temp)
         
-        storeUser(temp).                       //for get return value from axios async function;
+        start_loading(border,content)
+        storeUser(temp).                       //for geting return value from axios async function;
         then((res)=>{
 
           if(res.status){
@@ -107,6 +125,9 @@ export default function Signup() {
         catch((err)=>{
           console.log(err);
           notifyfailer("server error");
+        }).
+        finally(()=>{
+          finish_loading(border,content);
         })
 
     }
@@ -133,7 +154,7 @@ export default function Signup() {
               <h1 className='text-center roboto-bold'>Create Your Account</h1>
             </div>
 
-            <form className='roboto-regular' method='POST' onSubmit={handleSubmit}>
+            <form className='roboto-regular' method='POST' onSubmit={(e)=>handleSubmit(e,"submit_loading","submit_content")}>
               <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
                   <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
@@ -145,9 +166,13 @@ export default function Signup() {
                     <input type="email" name="email" className="form-control" onChange={(e)=>handleEmail(e)} id="exampleInputEmail1" aria-describedby="emailHelp" required/>
                   </div>
                   <div className='col-2 p-0 m-0'>
-                    <button type="button" id="varify" onClick={handlevarify} className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>Verify</button>
+                    <button type="button" id="varify" onClick={()=>handlevarify("verify_loading","verify_content")} className="btn btn-primary ms-2 disabled m-0" style={{backgroundColor:"#683ec5"}}>
+                      <span id="verify_loading"></span>
+                      <span id="verify_content">Verify</span>
+                    </button>
                   </div>
                 </div>
+                <div className={`form-text fs-8 text-success ${(emailmsg)?"d-block":"d-none"}`}>Please check your mail inbox and verify your email.</div>
                 <div class="form-text"><input type="checkbox" name="checkverify" value="true" required/> hereby, I declare that i had verify my email</div>
               </div>
 
@@ -199,7 +224,10 @@ export default function Signup() {
                 </div>
               </div>
               <div class="d-grid gap-2">
-                <button class="btn btn-primary" type="submit" style={{backgroundColor:"#683ec5"}}>Submit</button>
+                <button class="btn btn-primary" type="submit" style={{backgroundColor:"#683ec5"}}>
+                  <div id='submit_loading'></div>
+                  <span id="submit_content">Submit</span>
+                </button>
               </div>            
             </form>
 
@@ -240,3 +268,17 @@ export default function Signup() {
 //  when all input is field , pws and confirm pws same , email is verified then only submit;
 //  after submition delete email and status from table (i.e.) now verify link is expire;
 //  then create session and store token and username there;
+
+//start_finish():-
+//  eg <div>           #div1
+//      <div> </div>    #div2
+//    </div>
+//  take id of both div and add spinner-border class and visually-hidden class into div1 and div2 respectively
+// call by component handler function;
+
+//finish_loading():-
+//  eg <div>           #div1
+//      <div> </div>    #div2
+//    </div>
+//  take id of both div and remove spinner-border class and visually-hidden class from div1 and div2 respectively
+// call by component handler function;
