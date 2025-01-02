@@ -56,8 +56,8 @@ async function signin_authenticate(req,res){
     const json = {};
     try{
         const data = {
-            "username":req.query.username,
-            "pws":req.query.pws
+            "username":req.headers["username"],
+            "pws":req.headers["pws"]
         };
 
         console.log(data);
