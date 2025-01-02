@@ -28,6 +28,7 @@
 - **react-toastify**: For notifications.
 - **react-helmet**: For modifying the header.
 - **Bootstrap**: Integrated via `import "bootstrap/dist/css/bootstrap.css"` and `import "bootstrap/dist/js/bootstrap.bundle"` for Bootstrap 5 styling.
+- **Axios**: For sending request to application server (rest api).
 
 ### Backend
 
