@@ -1,12 +1,12 @@
-LockIt
+# LockIt
 
-Description
+## Description
 
-LockIt is a website designed to store your browsing website login credentials, so you don't need to remember them. While many websites offer similar services, LockIt stands out by offering a random strong password generator, ensuring that your passwords are both unique and secure.
+**LockIt** is a website designed to store your browsing website login credentials, so you don't need to remember them. While many websites offer similar services, LockIt stands out by offering a **random strong password generator**, ensuring that your passwords are both unique and secure.
 
-Features
+## Features
 
-- Responsive Design: Adaptive for both mobile and desktop devices.
+- **Responsive Design**: Adaptive for both mobile and desktop devices.
 - **User Authentication**: Only actual users can access their accounts.
 - **Personalization**: Each user is isolated, ensuring their data is private.
 - **Generate Strong Password**: Generate strong, random passwords with just one click.
