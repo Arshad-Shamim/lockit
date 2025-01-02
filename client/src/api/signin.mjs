@@ -1,8 +1,14 @@
 import axios from 'axios';
 
 async function authenticate(data){
-    return axios.get(`https://lockit-api.vercel.app/user/signin/authenticate?username=${data.username}&pws=${data.pws}`,{
-    }).
+    return axios.get(`https://lockit-api.vercel.app/user/signin/authenticate`,
+        {
+            params:{
+                username:`${data.username}`,
+                pws:`${data.pws}`
+            }
+        }
+    ).
     then((res)=>{
         res=res.data;
         console.log("get /user/signin/authenticate:",res);

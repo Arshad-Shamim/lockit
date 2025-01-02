@@ -59,6 +59,8 @@ async function signin_authenticate(req,res){
             "username":req.query.username,
             "pws":req.query.pws
         };
+
+        console.log(data);
         
         const result = await check(data);
 
