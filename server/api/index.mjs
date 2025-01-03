@@ -8,13 +8,14 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 
+const app = express();
+
 const __filename = fileURLToPath(import.meta.url);         //for render html page 
 const __dirname = dirname(__filename);
 app.set("view engin","ejs");
 app.set("views",path.resolve(path.join(__dirname, '../views')))
 
 
-const app = express();
 
 
 app.use(express.json());
