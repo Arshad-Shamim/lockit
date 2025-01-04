@@ -15,3 +15,8 @@ export default function dbConnect(){
 
     return pool;
 }
+
+//database we use
+//lockit_emailverify
+//lockit_users
+//lockit_usersdata
