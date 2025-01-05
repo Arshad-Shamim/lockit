@@ -251,6 +251,11 @@ function notifyFailer(data){
                     Contact
                   </a>
                 </li>
+                <li className="nav-item">
+                  <a className="nav-link text-white" href="/home/changePws">
+                    Change Password
+                  </a>
+                </li>
                 <li className='nav-item'>
                     <button type="button" class="btn btn-warning btn-sm mt-1 me-2" onClick={handleSigout}>
                         <span>Sign out </span>   

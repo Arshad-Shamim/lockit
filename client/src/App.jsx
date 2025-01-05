@@ -10,6 +10,7 @@ import Home from './pages/Home.jsx';
 import Error  from './pages/Error.jsx';
 import Features from './pages/Features.jsx';
 import Contact from './pages/Contact.jsx';
+import Changepws from './pages/changePws.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,6 +24,7 @@ function App() {
         <Route path="/home" element={<Home/>}/>
         <Route path="/home/features" element={<Features/>}/>
         <Route path="/home/contact" element={<Contact/>}/>
+        <Route path="/home/changePws" element={<Changepws/>}/>
         <Route path="/*" element={<Error msg={"Page not founded!"}/>}/>
       </Routes>
     </>
