@@ -10,7 +10,7 @@ import Home from './pages/Home.jsx';
 import Error  from './pages/Error.jsx';
 import Features from './pages/Features.jsx';
 import Contact from './pages/Contact.jsx';
-import Changepws from './pages/changePws.jsx';
+import Changepws from './pages/Changepws.jsx';
 
 function App() {
   const [count, setCount] = useState(0)
