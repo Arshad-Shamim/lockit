@@ -1,4 +1,4 @@
-import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata,sorted_userdata,comparePws,updatePws,fecthEmail} from "../model/user.mjs";
+import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata,sorted_userdata,updatePws,fecthEmail} from "../model/user.mjs";
 import { emailFormatChnagePws,sendMail } from "./emailHelper.mjs";
 import { deleteToken } from "../model/email.mjs";
 
@@ -300,3 +300,12 @@ export {signup_store,signin_authenticate,isvalidateToken,randompws,storeData,get
 //  if column name is recet add then call getDatafn 
 //  else callsorted data fn which return a sorted data with respect to specified column name;
 //  and according to response return a json;
+
+
+//chnagePws():-
+//  get data from client and pass old password in check function 
+//  if old password is match with database store password that mean password is correct
+//  then call update dara function which replace old password with new password;
+//  after then get email body by passing username,old pws,new pws 
+//  then send mail using sendmail function;
+

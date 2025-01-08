@@ -130,21 +130,6 @@ async function sorted_userdata(username,sortBy){
     }
 }
 
-async function comparePws(pws,username){
-    try{
-        const db= dbConnect();
-        const table = "lockit_users";
-        let query = `select pws from ${table} where "username"='${username}'`;
-        let result = await db.query(query);
-        let fetch_pws = result.rows[0].pws;
-        let flag = await bcrypt.compare(pws,fetch_pws)
-        return flag;
-    }
-    catch(err){
-        console.log("model/comparepws err :",err);
-        return 0;
-    }
-}
 
 async function updatePws(username,pws){
     try{
@@ -170,4 +155,4 @@ async function fecthEmail(username){
     return email;
 }
 
-export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata,sorted_userdata,comparePws,updatePws,fecthEmail}
+export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata,sorted_userdata,updatePws,fecthEmail}

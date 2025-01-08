@@ -180,3 +180,11 @@ export default function changePws() {
         )
     }
 }
+
+//authorization:-
+//  check wheather the user is authorize or not
+//  if user is authorize then render the webpage else show a error page
+
+//handle submit:-
+//  first check new pasword and confirm new password must be same
+//  then if same then call update password api with username,old password and new password
