@@ -2,7 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import { ToastContainer,toast } from 'react-toastify';
 
-import { authorization } from '../api/Changepws.mjs'
+import { authorization,changePws as updatePws} from '../api/Changepws.mjs'
 import Error from './Error';
 
 
@@ -11,6 +11,22 @@ export default function changePws() {
     let [showpws1,setShowpws1] = useState(1);
     let [showpws2,setShowpws2] = useState(1);
     let [showpws3,setShowpws3] = useState(1);
+    let [passwordData,setPasswordData] = useState({
+        "oldPws":"",
+        "newPws":"",
+        "newConfPws":""
+    });
+
+    
+  function start_loading(border,content){
+    document.getElementById(border).classList.add('spinner-border');
+    document.getElementById(content).classList.add('visually-hidden');
+  }
+
+  function finish_loading(border,content){
+    document.getElementById(border).classList.remove('spinner-border');
+    document.getElementById(content).classList.remove('visually-hidden');
+  }
 
     function notifyFailer(data){
         toast(data,{
@@ -39,6 +55,31 @@ export default function changePws() {
         notifyFailer("Something went wrong!");
     })
 
+    async function handleSubmit(border,content){
+        if(passwordData.newPws!=passwordData.newConfPws){
+            notifyFailer("New passworw and Confirm password must be same")
+        }
+        else{
+            start_loading(border,content);
+            updatePws(passwordData).
+            then((res)=>{
+                if(res){
+                    notifySuccess(res.msg);
+                }
+                else
+                    notifyFailer(res.msg);
+            }).
+            catch((err)=>{
+                console.log("chnagePws/hanldeSubmit err :",err);
+                notifyFailer("Some thing wrong!");
+            }).
+            finally(()=>{
+                finish_loading(border,content);
+                setPasswordData({"oldPws":"","newConfPws":"","newPws":""});
+            })
+        }
+    }
+
 
     if(!authorize){
         return(<Error msg={"Login or Siginup for continue..."}/>)
@@ -52,12 +93,11 @@ export default function changePws() {
                         <div className='container my-4'>
                             <div className='col-12'>
                                 <h3 className='text-danger text-center my-4 permanent-marker-regular fw-bold'>Change Password</h3>
-
                                 <div className='col-12 row mx-lg-4'>
-                                    <label className='col-12 p-0 my-1'>Old Password</label>
+                                    <label className='col-12 p-0 my-1'>Old Password<span className='text-danger'>*</span></label>
                                     
                                     <div className='col-lg-11 col-12 ps-0'>
-                                        <input type={(showpws1)?'password':"text"} className='col-lg-8 col-9 rounded'/>
+                                        <input type={(showpws1)?'password':"text"} className='col-lg-8 col-9 rounded' value={`${passwordData.oldPws}`} onChange={(e)=>setPasswordData((obj)=>({...obj,"oldPws":e.target.value}))} required/>
                                         <span className='btn border m-0 p-0 col-2 ms-2 mb-1 py-1' onClick={()=>setShowpws1(!showpws1)}>
                                             {
                                                 (showpws1)?
@@ -78,10 +118,10 @@ export default function changePws() {
                                 </div>
 
                                 <div className='col-12 row mx-lg-4'>
-                                    <label className='col-12 p-0 my-1'>New Password</label>
+                                    <label className='col-12 p-0 my-1'>New Password<span className='text-danger'>*</span></label>
                                     
                                     <div className='col-lg-11 col-12 ps-0'>
-                                        <input type={(showpws2)?'password':"text"} className='col-lg-8 col-9 rounded'/>
+                                        <input type={(showpws2)?'password':"text"} className='col-lg-8 col-9 rounded' value={`${passwordData.newPws}`} onChange={(e)=>setPasswordData((obj)=>({...obj,"newPws":e.target.value}))} required/>
                                         <span className='btn border m-0 p-0 col-2 ms-2 mb-1 py-1' onClick={()=>setShowpws2(!showpws2)}>
                                             {
                                                 (showpws2)?
@@ -102,10 +142,10 @@ export default function changePws() {
                                 </div>
 
                                 <div className='col-12 row mx-lg-4'>
-                                    <label className='col-12 p-0 my-1'>Confirm New Password</label>
+                                    <label className='col-12 p-0 my-1'>Confirm New Password<span className='text-danger'>*</span></label>
                                     
                                     <div className='col-lg-11 col-12 ps-0'>
-                                        <input type={(showpws3)?'password':"text"} className='col-lg-8 col-9 rounded'/>
+                                        <input type={(showpws3)?'password':"text"} className='col-lg-8 col-9 rounded' value={`${passwordData.newConfPws}`} onChange={(e)=>setPasswordData((obj)=>({...obj,"newConfPws":e.target.value}))} required/>
                                         <span className='btn border m-0 p-0 col-2 ms-2 mb-1 py-1' onClick={()=>setShowpws3(!showpws3)}>
                                             {
                                                 (showpws3)?
@@ -123,11 +163,14 @@ export default function changePws() {
                                             }
                                         </span>
                                     </div>
-                                <div className='col-lg-9 col-11 p-0 mt-4'>
+                                    <div className='col-lg-9 col-11 p-0 mt-4'>
                                         <div class="d-grid gap-2">
-                                            <button class="btn btn-danger" type="button">Change</button>
+                                            <button class="btn btn-danger" type="button" onClick={()=>handleSubmit('change_loading','change_content')}>
+                                                <span id="change_loading" className=''></span>
+                                                <span id="change_content" className=''>Change</span>
+                                            </button>
                                         </div>
-                                </div>  
+                                    </div>  
                                 </div>
                             </div>
                         </div>

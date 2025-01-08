@@ -22,4 +22,25 @@ async function authorization(){
     }
 }
 
-export{authorization}
+async function changePws(data){
+    let token = sessionStorage.getItem("token");
+    let username = sessionStorage.getItem("username");
+    data.username = username;
+
+    return axios.post("http://localhost:2000/user/changepws",{data},{
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    }).
+    then((res)=>{
+        res = res.data;
+        console.log("chnagepws/changepws get :",res);
+        return res;
+    }).
+    catch((err)=>{
+        console.log("changePws/changepws err :",err);
+        return {"status":0,"msg":"something went wrong!"}
+    })
+}
+
+export{authorization,changePws}

@@ -1,3 +1,4 @@
+import { connect } from "http2";
 import dbConnect from "./databaseconfig.mjs";
 import bcrypt from 'bcrypt';           //for encode or decode the password;
 
@@ -129,4 +130,44 @@ async function sorted_userdata(username,sortBy){
     }
 }
 
-export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata,sorted_userdata}
+async function comparePws(pws,username){
+    try{
+        const db= dbConnect();
+        const table = "lockit_users";
+        let query = `select pws from ${table} where "username"='${username}'`;
+        let result = await db.query(query);
+        let fetch_pws = result.rows[0].pws;
+        let flag = await bcrypt.compare(pws,fetch_pws)
+        return flag;
+    }
+    catch(err){
+        console.log("model/comparepws err :",err);
+        return 0;
+    }
+}
+
+async function updatePws(username,pws){
+    try{
+        const db = dbConnect();
+        let table = 'lockit_users';
+        pws = await bcrypt.hash(pws,5);
+        let query = `update ${table} set "pws"='${pws}' where "username"='${username}'`;
+        const result = await db.query(query);
+        return 1;
+    }
+    catch(err){
+        console.log("/model/updatePws err :",err);
+        return 0;
+    }
+}
+
+async function fecthEmail(username){
+    const db = dbConnect();
+    let table = "lockit_users";
+    let query = `select email from ${table} where "username"='${username}'`
+    const result = await db.query(query);
+    const email = result.rows[0].email;
+    return email;
+}
+
+export {checkStatus,storeUser,check,storeData,fetchUserdata,deleteLockit_usersdata,sorted_userdata,comparePws,updatePws,fecthEmail}

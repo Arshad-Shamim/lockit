@@ -45,4 +45,26 @@ async function sendMail(receiver,subject,body){
     });
 }
 
-export {emailFromat,sendMail}
+
+async function emailFormatChnagePws(username,oldPws,newPws){
+    return(
+        ` 
+        <div >
+            <h3>Dear ${username},</h3>
+            <p>We want to inform you that your Lockit account password has been successfully updated. Below are the details for your reference:</p>
+            <ul>
+                <li>Old Password :${oldPws}</li>
+                <li>New Password :${newPws}</li>
+            </ul>
+            <p>Please ensure that you keep this information confidential to maintain the security of your account.</p>
+            <p>Thank you for your attention to this matter.</p>
+
+            <p>
+                Best regards,<br>
+                Lockit Team
+            </p>
+        </div>
+        `
+    )
+}
+export {emailFromat,sendMail,emailFormatChnagePws}

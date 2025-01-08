@@ -1,4 +1,5 @@
-import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata,sorted_userdata} from "../model/user.mjs";
+import { checkStatus,storeUser,check,storeData as store,fetchUserdata,deleteLockit_usersdata,sorted_userdata,comparePws,updatePws,fecthEmail} from "../model/user.mjs";
+import { emailFormatChnagePws,sendMail } from "./emailHelper.mjs";
 import { deleteToken } from "../model/email.mjs";
 
 import jwt from 'jsonwebtoken' ;       //for generating token
@@ -223,7 +224,45 @@ async function sortData(req,res){
     res.send(json);
 }
 
-export {signup_store,signin_authenticate,isvalidateToken,randompws,storeData,getData,deleteData,sortData};
+async function changePws(req,res){
+    console.log("chnagePws()");
+    const json ={};
+    try{
+        let data = req.body.data;
+        data={
+            "username":data.username,
+            "pws":data.oldPws,
+            "newPws":data.newPws
+        }
+
+        let result = await check(data);
+        if(!result){
+            json.status=0,
+            json.msg="Incorect Password!"
+        }
+        else{
+            result = await updatePws(data.username,data.newPws);
+            json.status=1;
+            json.msg="Password Chnaged Successfully!";
+            const recever= await fecthEmail(data.username);
+            let body = await emailFormatChnagePws(data.username,data.pws,data.newPws);
+            const subject = "Notification of Password Change";
+            await sendMail(recever,subject,body);
+            json.notify = "email sent successfully!";
+        }
+    }
+    catch(err){
+        json.status=0;
+        json.msg="Server Error!";
+        console.log("/changepws err:",err);
+        res.send(err);
+    }
+
+    console.log("/controller/chnagePws response:",json);
+    res.json(json);
+}
+
+export {signup_store,signin_authenticate,isvalidateToken,randompws,storeData,getData,deleteData,sortData,changePws};
 
 
 //signup_store:-
