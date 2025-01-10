@@ -100,14 +100,14 @@ export default function Signin() {
                     <form className='col-lg-8 mt-4' onSubmit={(e)=>handleSubmit(e,"signin_loading","signin_content")} method='POST'>
                             <div class="mb-3">
                                 <label for="exampleInputEmail1" class="form-label">Username<span className='text-danger'>*</span></label>
-                                <input type="text" name="username" onChange={(e)=>setUsername(e.target.value)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" required/>
+                                <input type="text" name="username" onChange={(e)=>setUsername(e.target.value)} class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder='Default username=demo'required/>
                                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                             </div>
                             <div class="mb-3 container">
                                 <label for="exampleInputPassword1" class="form-label d-block">Password<span className='text-danger'>*</span></label>
                                 <div className='row'>
                                     <div className='col-10 p-0 m-0'>
-                                        <input type={passwordf?"password":"text"} name="pws" onChange={(e)=>{setPassword(e.target.value)}} className="form-control" id="exampleInputPassword1" required/>
+                                        <input type={passwordf?"password":"text"} name="pws" onChange={(e)=>{setPassword(e.target.value)}} className="form-control" id="exampleInputPassword1" required placeholder='Default password=123'/>
                                     </div>
                                     <div className='col-2 p-0 m-0'> 
                                     <span className='ms-2 btn border' onClick={()=>{setPasswordf(!passwordf)}}>
