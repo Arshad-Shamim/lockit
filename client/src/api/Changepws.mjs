@@ -27,7 +27,7 @@ async function changePws(data){
     let username = sessionStorage.getItem("username");
     data.username = username;
 
-    return axios.post("http://localhost:2000/user/changepws",{data},{
+    return axios.post("https://lockit-api.vercel.app/user/changepws",{data},{
         headers:{
             Authorization:`Bearer ${token}`
         }

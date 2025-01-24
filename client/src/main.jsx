@@ -8,7 +8,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js"; // For JavaScript
 
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  //copy content
+  <StrictMode>                            
     <BrowserRouter>
       <App />
     </BrowserRouter>
