@@ -28,3 +28,44 @@
     opacity: 1;
     pointer-events: auto;
   }
+
+  .bg-dark-custom {
+    background: #1e1e2f;
+  }
+  
+  .min-vh-100 {
+    min-height: 100vh;
+  }
+  
+  .w-select {
+    width: 10vw;
+  }
+  
+  .custom-card {
+    background: rgba(36, 36, 62, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    color: #f8f9fa;
+    transform: perspective(1000px) rotateX(1deg) rotateY(1deg);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .custom-card:hover {
+    transform: scale(1.02) perspective(1000px) rotateX(1deg) rotateY(1deg);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+  }
+  
+  .blurred-text {
+    filter: blur(4px);
+    transition: all 0.3s;
+  }
+  
+  .copy-button {
+    min-width: 8vw;
+    transition: opacity 0.3s;
+  }
+  
+  .copy-button:hover {
+    opacity: 1 !important;
+  }

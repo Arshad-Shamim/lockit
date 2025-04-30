@@ -456,59 +456,15 @@ export default function Home() {
             </form>
           </div>
         </div>
-
-        {/* <div className='my-4"'>
-              <h1 className='text-center roboto-regular'>User Information Table</h1>
-            </div> */}
-        {/* <table class="table table-bordered table-hover table-responsive" id="table_content">
-                <caption>User Account Database</caption>
-                <thead className='table-primary'>
-                  <tr>
-                    <th scope="col">S. No.</th>
-                    <th scope="col">URL</th>
-                    <th scope="col">USERNAME IDENTIFIER</th>
-                    <th scope="col">PASSWORD</th>
-                    <th>ACTION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    {
-                      data.map((obj,index)=>{
-                        return (
-                          <tr>
-                            <th scope={`${index}`}>{index+1}</th>
-                            <td><a href={obj.url}  className='text-dark'>{obj.url}</a></td>
-                            <td>{obj.user_indentifier}</td>
-                            <td>
-                              {tablepws==index?table_pws_fn(obj.pws):<span onClick={()=>setTablepws(index)} className='text-primary btn m-0 p-0 text-start ms-2'>view</span>}
-                            </td>
-                            <td className='ms-2 btn m-0 p-0'>
-                              <div onClick={()=>deleteTablerow(obj.url,`delete_row_${index}_loading`,`delete_row_${index}_content`)} id={`delete_row_${index}_loading`}>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16" id={`delete_row_${index}_content`}>
-                                  <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                                </svg>
-                              </div>
-                            </td>
-                          </tr>
-                        )
-                      })
-                    }
-                </tbody>
-              </table> */}
-
-        {/* table */}
-        <div
-          className="container-fluid d-flex flex-column"
-          style={{ background: "#1e1e2f", minHeight: "100vh" }}
-        >
+        
+        <div className="container-fluid d-flex flex-column bg-dark-custom min-vh-100">
           <div className="text-center pt-5" id="sort_by">
             <span className="ms-2 text-white fs-3">Sort By :</span>
             <div className="ms-1 d-inline">
               <select
-                class="form-select form-select-sm d-inline"
+                className="form-select form-select-sm d-inline w-select"
                 aria-label=".form-select-sm example"
                 name="sort"
-                style={{ width: "10vw" }}
                 onChange={(e) => handleSort(e)}
               >
                 <option value="0">Recently</option>
@@ -517,38 +473,17 @@ export default function Home() {
               </select>
             </div>
           </div>
+
           <div className="rounded py-5">
-            {data.length == 0 ? (
+            {data.length === 0 ? (
               <div className="d-flex justify-content-center align-items-center">
                 <div className="spinner-border text-white"></div>
               </div>
             ) : (
               data.map((obj, index) => (
                 <div
-                  className="col-10 col-md-8 mx-auto rounded-4 p-4 row my-4"
-                  style={{
-                    background: "rgba(36, 36, 62, 0.8)",
-                    border: "1px solid rgba(255, 255, 255, 0.1)",
-                    boxShadow: "0 10px 30px rgba(0, 0, 0, 0.5)",
-                    backdropFilter: "blur(10px)",
-                    color: "#f8f9fa", // light text
-                    transform:
-                      "perspective(1000px) rotateX(1deg) rotateY(1deg)",
-                    transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  }}
+                  className="col-10 col-md-8 mx-auto rounded-4 p-4 row my-4 custom-card"
                   key={index}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "scale(1.02) perspective(1000px) rotateX(1deg) rotateY(1deg)";
-                    e.currentTarget.style.boxShadow =
-                      "0 15px 40px rgba(0, 0, 0, 0.6)";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform =
-                      "perspective(1000px) rotateX(1deg) rotateY(1deg)";
-                    e.currentTarget.style.boxShadow =
-                      "0 10px 30px rgba(0, 0, 0, 0.5)";
-                  }}
                 >
                   <div className="row col-md-8">
                     <div className="d-flex align-items-center mb-2">
@@ -578,27 +513,11 @@ export default function Home() {
                     <div className="d-flex align-items-center">
                       <span className="me-2">🔒</span>
                       <div className="position-relative d-inline-block">
-                        <span
-                          className="d-inline-block text-light text-opacity-75"
-                          style={{
-                            filter: "blur(4px)",
-                            transition: "all 0.3s",
-                          }}
-                        >
+                        <span className="d-inline-block text-light text-opacity-75 blurred-text">
                           {obj.pws}
                         </span>
                         <button
-                          className="btn btn-sm btn-outline-light position-absolute top-0 start-0 w-100 h-100 opacity-0"
-                          style={{
-                            transition: "opacity 0.3s",
-                            minWidth: "8vw",
-                          }}
-                          onMouseEnter={(e) =>
-                            e.currentTarget.classList.remove("opacity-0")
-                          }
-                          onMouseLeave={(e) =>
-                            e.currentTarget.classList.add("opacity-0")
-                          }
+                          className="btn btn-sm btn-outline-light position-absolute top-0 start-0 w-100 h-100 opacity-0 copy-button"
                           onClick={async () => {
                             await navigator.clipboard.writeText(obj.pws);
                             notifySuccess("Copied!");
