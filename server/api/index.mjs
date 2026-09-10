@@ -28,6 +28,7 @@ app.use(cors({
     credentials: true
 }));
 
+//hello
 app.options("*", cors());
 app.use("/authorization",handleuser);
 app.use("/email",handleEmail);
